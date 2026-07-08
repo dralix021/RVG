@@ -1,7 +1,8 @@
 # pages.py  -  RVG Gateway v10.2
 # شامل: LOGIN_HTML, DASHBOARD_HTML, get_public_page_html()
 
-LOGIN_HTML = r"""<!DOCTYPE html>
+LOGIN_HTML = r"""
+<!DOCTYPE html>
 <html lang="fa" dir="rtl">
 
 <head>
@@ -9,7 +10,7 @@ LOGIN_HTML = r"""<!DOCTYPE html>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>ورود - RVG Gateway</title>
+<title>SpareVpn - Login</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700&display=swap" rel="stylesheet">
 
@@ -27,21 +28,17 @@ LOGIN_HTML = r"""<!DOCTYPE html>
 
 :root{
 
-    --bg:#0b1120;
-
-    --card:#111827;
-
-    --input:#0f172a;
+    --bg:#101828;
+    --card:#151f31;
+    --input:#101828;
 
     --primary:#409eff;
-
     --primary-hover:#337ecc;
 
-    --text:#f1f5f9;
+    --text:#ffffff;
+    --muted:#98a2b3;
 
-    --muted:#94a3b8;
-
-    --border:rgba(255,255,255,.08);
+    --border:rgba(255,255,255,.10);
 
 }
 
@@ -53,6 +50,8 @@ body{
     width:100%;
     height:100%;
 
+    overflow:hidden;
+
 }
 
 
@@ -61,60 +60,31 @@ body{
 
     font-family:'Vazirmatn',sans-serif;
 
-    background:
-
-    radial-gradient(
-    circle at top,
-    rgba(64,158,255,.12),
-    transparent 35%
-    ),
-
-    var(--bg);
+    background:#101828;
 
     display:flex;
 
-    justify-content:center;
-
     align-items:center;
 
-    color:var(--text);
+    justify-content:center;
+
+    color:white;
 
 }
 
 
 
 
-.grid{
+
+.under{
 
     position:fixed;
 
     inset:0;
 
-    background-image:
+    background:#101828;
 
-    linear-gradient(
-    rgba(255,255,255,.025) 1px,
-    transparent 1px
-    ),
-
-    linear-gradient(
-    90deg,
-    rgba(255,255,255,.025) 1px,
-    transparent 1px
-    );
-
-
-    background-size:40px 40px;
-
-}
-
-
-
-.bg{
-
-    position:fixed;
-
-    inset:0;
+    overflow:hidden;
 
 }
 
@@ -122,12 +92,60 @@ body{
 
 
 
-.orb{
+.wave{
 
-    display:none;
+    opacity:.6;
+
+    position:absolute;
+
+    bottom:40%;
+
+    left:50%;
+
+
+    width:6000px;
+
+    height:6000px;
+
+
+    background:rgba(14,73,181,.20);
+
+
+    margin-left:-3000px;
+
+
+    transform-origin:50% 48%;
+
+
+    border-radius:46%;
+
+
+    pointer-events:none;
+
+
+    rotate:125deg;
 
 }
 
+
+
+.wave2{
+
+    opacity:.4;
+
+    rotate:70deg;
+
+}
+
+
+
+.wave3{
+
+    opacity:.2;
+
+    rotate:90deg;
+
+}
 
 
 
@@ -136,16 +154,15 @@ body{
 
     width:100%;
 
-    max-width:380px;
+    max-width:430px;
 
     padding:20px;
 
     position:relative;
 
-    z-index:5;
+    z-index:10;
 
 }
-
 
 
 
@@ -156,55 +173,71 @@ body{
     background:var(--card);
 
 
-    border:1px solid var(--border);
+    border-radius:2rem;
 
 
-    border-radius:12px;
+    padding:3rem;
 
 
-    padding:30px;
+    transition:.3s;
 
 
     box-shadow:
 
-    0 15px 50px rgba(0,0,0,.45);
-
+    0 10px 40px rgba(0,0,0,.20);
 
 
 }
+
+
+
+.card:hover{
+
+    box-shadow:
+
+    0 15px 60px rgba(0,0,0,.35);
+
+}
+
 
 
 
 
 .brand{
 
+
     display:flex;
+
+
+    justify-content:center;
+
 
     align-items:center;
 
-    gap:12px;
 
-    margin-bottom:28px;
+    margin-bottom:30px;
+
+
+    gap:14px;
+
 
 }
 
 
 
-
 .brand-img{
 
-    width:42px;
 
-    height:42px;
+    width:55px;
 
 
-    border-radius:8px;
+    height:55px;
+
+
+    border-radius:14px;
 
 
     overflow:hidden;
-
-
-    border:1px solid #263449;
 
 
 }
@@ -213,11 +246,15 @@ body{
 
 .brand-img img{
 
+
     width:100%;
+
 
     height:100%;
 
+
     object-fit:cover;
+
 
 }
 
@@ -226,11 +263,15 @@ body{
 
 .brand-name{
 
-    font-size:16px;
+
+    font-size:20px;
+
 
     font-weight:700;
 
-    color:#fff;
+
+    color:white;
+
 
 }
 
@@ -239,11 +280,15 @@ body{
 
 .brand-sub{
 
+
     font-size:11px;
+
 
     color:var(--muted);
 
-    margin-top:3px;
+
+    margin-top:4px;
+
 
 }
 
@@ -252,134 +297,39 @@ body{
 
 h1{
 
-    font-size:20px;
 
-    font-weight:600;
+    text-align:center;
 
-    color:#fff;
 
-    margin-bottom:8px;
+    font-size:32px;
+
+
+    font-weight:700;
+
+
+    margin:20px 0 35px;
+
 
 }
+
 
 
 
 
 .sub{
 
-    font-size:12px;
+
+    text-align:center;
+
 
     color:var(--muted);
 
-    margin-bottom:22px;
-
-}
-
-
-
-
-
-.err{
-
-
-    display:none;
-
-
-    align-items:center;
-
-
-    gap:8px;
-
-
-    background:rgba(239,68,68,.1);
-
-
-    border:1px solid rgba(239,68,68,.25);
-
-
-    color:#f87171;
-
-
-    border-radius:8px;
-
-
-    padding:10px;
-
-
-    margin-bottom:15px;
-
-
-    font-size:12px;
-
-
-}
-
-
-
-.err.show{
-
-    display:flex;
-
-}
-
-
-
-
-.hint{
-
-
-    display:flex;
-
-
-    align-items:center;
-
-
-    justify-content:space-between;
-
-
-    background:#0f172a;
-
-
-    border:1px solid var(--border);
-
-
-    border-radius:8px;
-
-
-    padding:10px 12px;
-
-
-    margin-bottom:18px;
-
-
-}
-
-
-
-
-.hint-label{
-
-
-    font-size:11px;
-
-    color:var(--muted);
-
-}
-
-
-
-.hint-val{
-
-
-    cursor:pointer;
-
-    color:var(--primary);
 
     font-size:13px;
 
-    font-family:monospace;
 
-    font-weight:600;
+    margin-bottom:25px;
+
 
 }
 
@@ -389,9 +339,12 @@ h1{
 
 .field{
 
+
     margin-bottom:18px;
 
+
 }
+
 
 
 
@@ -401,13 +354,13 @@ h1{
     display:block;
 
 
+    color:#cbd5e1;
+
+
     font-size:12px;
 
 
-    color:var(--muted);
-
-
-    margin-bottom:7px;
+    margin-bottom:8px;
 
 
 }
@@ -418,7 +371,9 @@ h1{
 
 .inp-wrap{
 
+
     position:relative;
+
 
 }
 
@@ -431,28 +386,31 @@ input[type=password]{
     width:100%;
 
 
-    height:44px;
+    height:50px;
 
 
     background:var(--input);
 
 
-    border:1px solid #263449;
+    border:1px solid rgba(255,255,255,.12);
 
 
-    border-radius:8px;
+    border-radius:30px;
 
 
     color:white;
 
 
-    padding:0 15px 0 40px;
+    padding:0 50px 0 20px;
+
+
+    outline:none;
 
 
     font-family:inherit;
 
 
-    outline:none;
+    font-size:14px;
 
 
     transition:.2s;
@@ -465,7 +423,7 @@ input[type=password]{
 input[type=password]:focus{
 
 
-    border-color:var(--primary);
+    border-color:#409eff;
 
 
     box-shadow:0 0 0 3px rgba(64,158,255,.15);
@@ -476,13 +434,14 @@ input[type=password]:focus{
 
 
 
+
 .ic{
 
 
     position:absolute;
 
 
-    left:12px;
+    right:20px;
 
 
     top:50%;
@@ -491,7 +450,119 @@ input[type=password]:focus{
     transform:translateY(-50%);
 
 
-    color:#64748b;
+    color:#94a3b8;
+
+
+    font-size:18px;
+
+
+}
+
+
+
+
+
+.hint{
+
+
+    display:flex;
+
+
+    justify-content:space-between;
+
+
+    align-items:center;
+
+
+    background:#101828;
+
+
+    border-radius:30px;
+
+
+    padding:10px 18px;
+
+
+    margin-bottom:20px;
+
+
+}
+
+
+
+.hint-label{
+
+
+    font-size:12px;
+
+
+    color:#98a2b3;
+
+
+}
+
+
+
+.hint-val{
+
+
+    color:#409eff;
+
+
+    cursor:pointer;
+
+
+    font-weight:600;
+
+
+}
+
+
+
+
+
+
+.err{
+
+
+    display:none;
+
+
+    background:rgba(239,68,68,.1);
+
+
+    border:1px solid rgba(239,68,68,.25);
+
+
+    color:#f87171;
+
+
+    border-radius:20px;
+
+
+    padding:10px 15px;
+
+
+    font-size:12px;
+
+
+    margin-bottom:15px;
+
+
+}
+
+
+
+.err.show{
+
+
+    display:flex;
+
+
+    gap:8px;
+
+
+    align-items:center;
 
 
 }
@@ -505,13 +576,13 @@ input[type=password]:focus{
     width:100%;
 
 
-    height:44px;
+    height:50px;
 
 
     border:0;
 
 
-    border-radius:8px;
+    border-radius:30px;
 
 
     background:var(--primary);
@@ -523,10 +594,10 @@ input[type=password]:focus{
     font-family:inherit;
 
 
-    font-size:14px;
+    font-size:15px;
 
 
-    font-weight:600;
+    font-weight:bold;
 
 
     cursor:pointer;
@@ -573,10 +644,10 @@ input[type=password]:focus{
 .footer{
 
 
-    margin-top:20px;
+    margin-top:25px;
 
 
-    padding-top:15px;
+    padding-top:18px;
 
 
     border-top:1px solid var(--border);
@@ -585,10 +656,10 @@ input[type=password]:focus{
     text-align:center;
 
 
-    font-size:11px;
+    color:#98a2b3;
 
 
-    color:var(--muted);
+    font-size:12px;
 
 
 }
@@ -598,7 +669,7 @@ input[type=password]:focus{
 .footer a{
 
 
-    color:var(--primary);
+    color:#409eff;
 
 
     text-decoration:none;
@@ -611,33 +682,17 @@ input[type=password]:focus{
 
 
 
-
-@media(max-width:420px){
-
-
-.card{
-
-    padding:25px;
-
-}
-
-
-}
-
-
-
 </style>
 
 </head>
 
-
-
 <body>
 
+<div class="under">
 
-<div class="bg"></div>
-
-<div class="grid"></div>
+<div class="wave"></div>
+<div class="wave wave2"></div>
+<div class="wave wave3"></div>
 
 
 <div class="wrap">
@@ -656,6 +711,7 @@ input[type=password]:focus{
 </div>
 
 
+
 <div>
 
 <div class="brand-name">
@@ -663,24 +719,25 @@ SpareVpn
 </div>
 
 <div class="brand-sub">
-RVG Gateway - v10.2
+RVG Gateway
+</div>
+
 </div>
 
 
 </div>
 
-
-</div>
 
 
 
 <h1>
-ورود به پنل
+Welcome
 </h1>
 
 
+
 <p class="sub">
-رمز عبور را برای ورود وارد کنید
+برای ورود به پنل مدیریت رمز عبور را وارد کنید
 </p>
 
 
@@ -698,11 +755,14 @@ RVG Gateway - v10.2
 
 
 
+
 <div class="hint">
+
 
 <span class="hint-label">
 رمز پیش فرض
 </span>
+
 
 
 <span class="hint-val"
@@ -719,7 +779,10 @@ admin021
 
 
 
+
+
 <form id="form">
+
 
 
 <div class="field">
@@ -728,6 +791,7 @@ admin021
 <label>
 رمز عبور
 </label>
+
 
 
 <div class="inp-wrap">
@@ -751,14 +815,19 @@ required
 <i class="ti ti-lock ic"></i>
 
 
-</div>
-
 
 </div>
 
 
+</div>
 
-<button class="btn" id="btn">
+
+
+
+
+
+
+<button class="btn" id="btn" type="submit">
 
 
 <i class="ti ti-login-2"></i>
@@ -776,9 +845,13 @@ required
 
 
 
+
+
 <div class="footer">
 
+
 کانال رسمی
+
 
 <a href="https://t.me/SpareVpn" target="_blank">
 
@@ -789,29 +862,44 @@ required
 </a>
 
 
+
+</div>
+
+
+
+
+
+</div>
+
+
+</div>
+
+
 </div>
 
 
 
-</div>
 
-</div>
 
 
 
 <script>
 
-document.getElementById("form").addEventListener("submit",async e=>{
+
+document.getElementById("form")
+.addEventListener("submit",async e=>{
 
 
 e.preventDefault();
+
 
 
 const btn=document.getElementById("btn");
 
 const err=document.getElementById("err");
 
-const text=document.getElementById("err-text");
+const errText=document.getElementById("err-text");
+
 
 
 btn.disabled=true;
@@ -821,40 +909,63 @@ err.classList.remove("show");
 
 
 
-btn.innerHTML="در حال ورود...";
+btn.innerHTML=
+
+'<i class="ti ti-loader"></i> در حال ورود...';
+
+
 
 
 
 try{
 
 
-let r=await fetch("/api/login",{
+const res=await fetch("/api/login",{
+
 
 method:"POST",
 
+
 headers:{
+
 
 "Content-Type":"application/json"
 
+
 },
+
 
 body:JSON.stringify({
 
-password:document.getElementById("pw").value
+
+password:
+document.getElementById("pw").value
+
 
 })
+
 
 });
 
 
 
-if(!r.ok){
 
-let d=await r.json().catch(()=>({}));
 
-throw Error(d.detail || "خطا در ورود");
+
+if(!res.ok){
+
+
+const data=await res.json()
+.catch(()=>({}));
+
+
+throw new Error(
+data.detail || "رمز عبور اشتباه است"
+);
+
 
 }
+
 
 
 
@@ -862,29 +973,40 @@ location.href="/dashboard";
 
 
 
-}catch(e){
 
 
-text.textContent=e.message;
+
+}catch(errr){
+
+
+
+errText.textContent=errr.message;
 
 
 err.classList.add("show");
 
 
+
 btn.disabled=false;
 
 
-btn.innerHTML='<i class="ti ti-login-2"></i> ورود';
+
+btn.innerHTML=
+
+'<i class="ti ti-login-2"></i> ورود';
 
 
 
 }
 
 
+
 });
 
 
+
 </script>
+
 
 
 </body>
