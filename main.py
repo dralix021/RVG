@@ -761,56 +761,6 @@ async def public_sub_data(uuid_key: str, request: Request):
         "total_used_fmt": fmt_bytes(total_used),
         "links": links_out,
     }
-# ====================== Telegram Proxy Endpoints ======================
-
-@app.get("/tg/socks5")
-async def tg_socks5_proxy():
-    """SOCKS5 Proxy for Telegram"""
-    host = get_host()
-    return {
-        "server": host,
-        "port": 443,
-        "type": "socks5",
-        "username": "tg",
-        "password": secrets.token_urlsafe(12),  # هر بار رندوم
-        "remark": "RVG SOCKS5 Telegram"
-    }
-
-
-# MTProto Proxy
-@app.get("/tg/mtproto")
-async def tg_mtproto_proxy():
-    """MTProto Proxy for Telegram"""
-    host = get_host()
-    secret = secrets.token_hex(16)  # Secret 32 کاراکتری
-    
-    return {
-        "server": host,
-        "port": 443,
-        "type": "mtproto",
-        "secret": f"dd{secret}",   # dd برای obfuscated
-        "remark": "RVG MTProto Telegram"
-    }
-
-
-@app.get("/tg/config")
-async def tg_full_config(_=Depends(require_auth)):
-    """کانفیگ کامل برای تلگرام"""
-    host = get_host()
-    return {
-        "socks5": {
-            "server": host,
-            "port": 443,
-            "username": "tg",
-            "password": secrets.token_urlsafe(16),
-        },
-        "mtproto": {
-            "server": host,
-            "port": 443,
-            "secret": "dd" + secrets.token_hex(16),
-        },
-        "info": "برای استفاده در تلگرام پروکسی اضافه کنید"
-    }
 # ── HTML Pages (login + dashboard) ───────────────────────────────────────────
 from pages import LOGIN_HTML, DASHBOARD_HTML
 @app.get("/login", response_class=HTMLResponse)
