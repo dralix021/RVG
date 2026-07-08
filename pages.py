@@ -50,8 +50,6 @@ body{
     width:100%;
     height:100%;
 
-    overflow:hidden;
-
 }
 
 
@@ -62,13 +60,9 @@ body{
 
     background:#101828;
 
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
     color:white;
+
+    overflow:hidden;
 
 }
 
@@ -78,11 +72,17 @@ body{
 
 .under{
 
-    position:fixed;
+    width:100%;
 
-    inset:0;
+    height:100%;
 
-    background:#101828;
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    position:relative;
 
     overflow:hidden;
 
@@ -102,26 +102,17 @@ body{
 
     left:50%;
 
-
     width:6000px;
 
     height:6000px;
 
-
-    background:rgba(14,73,181,.20);
-
+    background:rgba(14,73,181,.22);
 
     margin-left:-3000px;
 
-
     transform-origin:50% 48%;
 
-
     border-radius:46%;
-
-
-    pointer-events:none;
-
 
     rotate:125deg;
 
@@ -131,7 +122,7 @@ body{
 
 .wave2{
 
-    opacity:.4;
+    opacity:.35;
 
     rotate:70deg;
 
@@ -150,13 +141,18 @@ body{
 
 
 
+
 .wrap{
 
     width:100%;
 
-    max-width:430px;
+    max-width:520px;
 
     padding:20px;
+
+    display:flex;
+
+    justify-content:center;
 
     position:relative;
 
@@ -167,27 +163,32 @@ body{
 
 
 
+
 .card{
 
+    width:100%;
 
-    background:var(--card);
-
-
-    border-radius:2rem;
+    max-width:430px;
 
 
-    padding:3rem;
+    background:#151f31;
 
 
-    transition:.3s;
+    border-radius:32px;
+
+
+    padding:48px;
 
 
     box-shadow:
 
-    0 10px 40px rgba(0,0,0,.20);
+    0 20px 60px rgba(0,0,0,.35);
 
+
+    transition:.3s;
 
 }
+
 
 
 
@@ -195,7 +196,7 @@ body{
 
     box-shadow:
 
-    0 15px 60px rgba(0,0,0,.35);
+    0 25px 80px rgba(0,0,0,.45);
 
 }
 
@@ -205,73 +206,57 @@ body{
 
 .brand{
 
-
     display:flex;
-
 
     justify-content:center;
 
-
     align-items:center;
-
-
-    margin-bottom:30px;
-
 
     gap:14px;
 
+    margin-bottom:15px;
 
 }
+
+
 
 
 
 .brand-img{
 
-
     width:55px;
-
 
     height:55px;
 
-
-    border-radius:14px;
-
+    border-radius:15px;
 
     overflow:hidden;
 
-
 }
+
+
 
 
 
 .brand-img img{
 
-
     width:100%;
-
 
     height:100%;
 
-
     object-fit:cover;
 
-
 }
+
 
 
 
 
 .brand-name{
 
-
     font-size:20px;
 
-
     font-weight:700;
-
-
-    color:white;
-
 
 }
 
@@ -280,35 +265,26 @@ body{
 
 .brand-sub{
 
-
     font-size:11px;
 
-
-    color:var(--muted);
-
-
-    margin-top:4px;
-
+    color:#98a2b3;
 
 }
 
 
 
 
-h1{
 
+
+h1{
 
     text-align:center;
 
-
     font-size:32px;
-
 
     font-weight:700;
 
-
-    margin:20px 0 35px;
-
+    margin:20px 0 12px;
 
 }
 
@@ -318,18 +294,99 @@ h1{
 
 .sub{
 
-
     text-align:center;
-
-
-    color:var(--muted);
-
 
     font-size:13px;
 
+    color:#98a2b3;
 
-    margin-bottom:25px;
+    margin-bottom:30px;
 
+}
+
+
+
+
+.err{
+
+    display:none;
+
+    align-items:center;
+
+    gap:8px;
+
+    background:rgba(239,68,68,.1);
+
+    border:1px solid rgba(239,68,68,.25);
+
+    color:#f87171;
+
+    padding:12px 15px;
+
+    border-radius:20px;
+
+    margin-bottom:15px;
+
+    font-size:12px;
+
+}
+
+
+
+.err.show{
+
+    display:flex;
+
+}
+
+
+
+
+
+
+.hint{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    background:#101828;
+
+    border:1px solid rgba(255,255,255,.08);
+
+    border-radius:30px;
+
+    padding:10px 18px;
+
+    margin-bottom:20px;
+
+}
+
+
+
+
+.hint-label{
+
+    color:#98a2b3;
+
+    font-size:12px;
+
+}
+
+
+
+
+.hint-val{
+
+    color:#409eff;
+
+    cursor:pointer;
+
+    font-weight:600;
+
+    font-size:13px;
 
 }
 
@@ -339,9 +396,7 @@ h1{
 
 .field{
 
-
-    margin-bottom:18px;
-
+    margin-bottom:20px;
 
 }
 
@@ -350,30 +405,22 @@ h1{
 
 .field label{
 
-
     display:block;
-
-
-    color:#cbd5e1;
-
 
     font-size:12px;
 
+    color:#cbd5e1;
 
     margin-bottom:8px;
-
 
 }
 
 
 
 
-
 .inp-wrap{
 
-
     position:relative;
-
 
 }
 
@@ -389,7 +436,7 @@ input[type=password]{
     height:50px;
 
 
-    background:var(--input);
+    background:#101828;
 
 
     border:1px solid rgba(255,255,255,.12);
@@ -401,16 +448,16 @@ input[type=password]{
     color:white;
 
 
-    padding:0 50px 0 20px;
-
-
-    outline:none;
-
-
     font-family:inherit;
 
 
     font-size:14px;
+
+
+    padding:0 50px 0 20px;
+
+
+    outline:none;
 
 
     transition:.2s;
@@ -422,201 +469,64 @@ input[type=password]{
 
 input[type=password]:focus{
 
-
     border-color:#409eff;
-
 
     box-shadow:0 0 0 3px rgba(64,158,255,.15);
 
-
 }
-
 
 
 
 
 .ic{
 
-
     position:absolute;
-
 
     right:20px;
 
-
     top:50%;
-
 
     transform:translateY(-50%);
 
-
     color:#94a3b8;
-
 
     font-size:18px;
 
-
 }
 
-
-
-
-
-.hint{
-
-
-    display:flex;
-
-
-    justify-content:space-between;
-
-
-    align-items:center;
-
-
-    background:#101828;
-
-
-    border-radius:30px;
-
-
-    padding:10px 18px;
-
-
-    margin-bottom:20px;
-
-
-}
-
-
-
-.hint-label{
-
-
-    font-size:12px;
-
-
-    color:#98a2b3;
-
-
-}
-
-
-
-.hint-val{
-
-
-    color:#409eff;
-
-
-    cursor:pointer;
-
-
-    font-weight:600;
-
-
-}
-
-
-
-
-
-
-.err{
-
-
-    display:none;
-
-
-    background:rgba(239,68,68,.1);
-
-
-    border:1px solid rgba(239,68,68,.25);
-
-
-    color:#f87171;
-
-
-    border-radius:20px;
-
-
-    padding:10px 15px;
-
-
-    font-size:12px;
-
-
-    margin-bottom:15px;
-
-
-}
-
-
-
-.err.show{
-
-
-    display:flex;
-
-
-    gap:8px;
-
-
-    align-items:center;
-
-
-}
-
-
-
+</style>
 
 .btn{
 
-
     width:100%;
-
 
     height:50px;
 
-
-    border:0;
-
+    border:none;
 
     border-radius:30px;
 
-
-    background:var(--primary);
-
+    background:#409eff;
 
     color:white;
 
-
     font-family:inherit;
-
 
     font-size:15px;
 
-
-    font-weight:bold;
-
+    font-weight:700;
 
     cursor:pointer;
 
-
     display:flex;
-
-
-    justify-content:center;
-
 
     align-items:center;
 
+    justify-content:center;
 
     gap:8px;
 
-
     transition:.2s;
-
 
 }
 
@@ -624,9 +534,7 @@ input[type=password]:focus{
 
 .btn:hover{
 
-
-    background:var(--primary-hover);
-
+    background:#337ecc;
 
 }
 
@@ -640,27 +548,19 @@ input[type=password]:focus{
 
 
 
-
 .footer{
-
 
     margin-top:25px;
 
-
     padding-top:18px;
 
-
-    border-top:1px solid var(--border);
-
+    border-top:1px solid rgba(255,255,255,.08);
 
     text-align:center;
 
-
-    color:#98a2b3;
-
-
     font-size:12px;
 
+    color:#98a2b3;
 
 }
 
@@ -668,15 +568,63 @@ input[type=password]:focus{
 
 .footer a{
 
-
     color:#409eff;
-
 
     text-decoration:none;
 
-
     margin-right:5px;
 
+}
+
+
+
+
+@media(max-width:600px){
+
+
+    .wrap{
+
+        padding:15px;
+
+    }
+
+
+    .card{
+
+        padding:30px 22px;
+
+        border-radius:24px;
+
+    }
+
+
+    h1{
+
+        font-size:26px;
+
+    }
+
+
+}
+
+
+
+@media(max-height:700px){
+
+    body{
+
+        overflow:auto;
+
+    }
+
+
+    .under{
+
+        align-items:flex-start;
+
+        padding-top:20px;
+
+    }
 
 }
 
@@ -686,19 +634,26 @@ input[type=password]:focus{
 
 </head>
 
+
 <body>
+
 
 <div class="under">
 
+
 <div class="wave"></div>
+
 <div class="wave wave2"></div>
+
 <div class="wave wave3"></div>
+
 
 
 <div class="wrap">
 
 
 <div class="card">
+
 
 
 <div class="brand">
@@ -718,14 +673,17 @@ input[type=password]:focus{
 SpareVpn
 </div>
 
+
 <div class="brand-sub">
 RVG Gateway
 </div>
 
+
 </div>
 
 
 </div>
+
 
 
 
@@ -745,11 +703,15 @@ Welcome
 
 <div class="err" id="err">
 
+
 <i class="ti ti-alert-circle"></i>
+
 
 <span id="err-text"></span>
 
+
 </div>
+
 
 
 
@@ -766,7 +728,7 @@ Welcome
 
 
 <span class="hint-val"
-onclick="document.getElementById('pw').value='123456'">
+onclick="document.getElementById('pw').value='123456';document.getElementById('pw').focus();">
 
 admin021
 
@@ -815,7 +777,6 @@ required
 <i class="ti ti-lock ic"></i>
 
 
-
 </div>
 
 
@@ -831,6 +792,7 @@ required
 
 
 <i class="ti ti-login-2"></i>
+
 
 ورود
 
@@ -855,17 +817,18 @@ required
 
 <a href="https://t.me/SpareVpn" target="_blank">
 
+
 <i class="ti ti-brand-telegram"></i>
 
+
 @SpareVpn
+
 
 </a>
 
 
 
 </div>
-
-
 
 
 
@@ -898,7 +861,7 @@ const btn=document.getElementById("btn");
 
 const err=document.getElementById("err");
 
-const errText=document.getElementById("err-text");
+const text=document.getElementById("err-text");
 
 
 
@@ -910,7 +873,6 @@ err.classList.remove("show");
 
 
 btn.innerHTML=
-
 '<i class="ti ti-loader"></i> در حال ورود...';
 
 
@@ -920,7 +882,7 @@ btn.innerHTML=
 try{
 
 
-const res=await fetch("/api/login",{
+const r=await fetch("/api/login",{
 
 
 method:"POST",
@@ -951,16 +913,15 @@ document.getElementById("pw").value
 
 
 
+if(!r.ok){
 
-if(!res.ok){
 
-
-const data=await res.json()
+const d=await r.json()
 .catch(()=>({}));
 
 
 throw new Error(
-data.detail || "رمز عبور اشتباه است"
+d.detail || "خطا در ورود"
 );
 
 
@@ -969,22 +930,21 @@ data.detail || "رمز عبور اشتباه است"
 
 
 
-location.href="/dashboard";
+
+window.location.href="/dashboard";
 
 
 
 
 
-
-}catch(errr){
-
+}catch(e){
 
 
-errText.textContent=errr.message;
+
+text.textContent=e.message;
 
 
 err.classList.add("show");
-
 
 
 btn.disabled=false;
@@ -992,7 +952,6 @@ btn.disabled=false;
 
 
 btn.innerHTML=
-
 '<i class="ti ti-login-2"></i> ورود';
 
 
@@ -1006,7 +965,6 @@ btn.innerHTML=
 
 
 </script>
-
 
 
 </body>
