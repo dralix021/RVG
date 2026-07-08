@@ -99,7 +99,10 @@ SESSION_COOKIE = "rvg_session"
 SESSION_TTL = 60 * 60 * 24 * 7
 def hash_password(pw: str) -> str:
     return hashlib.sha256(f"{pw}{CONFIG['secret']}".encode()).hexdigest()
-AUTH = {"password_hash": hash_password(os.environ.get("ADMIN_PASSWORD", "123456"))}
+AUTH = {
+    "username": os.environ.get("ADMIN_USERNAME", "AdminRoot"),
+    "password_hash": hash_password(os.environ.get("ADMIN_PASSWORD", "Admin021"))
+}
 SESSIONS: dict = {}
 SESSIONS_LOCK = asyncio.Lock()
 async def create_session() -> str:
@@ -421,21 +424,74 @@ async def sub_group_subscription(uuid_key: str, request: Request):
         headers={
             "profile-title": quote(sub["name"]),
             "support-url": "https://t.me/SpareVpn",
-            "profile-update-interval": "12",
+            "profile-update-interval": "17",
         }
     )
 # ── Auth endpoints ────────────────────────────────────────────────────────────
 @app.post("/api/login")
 async def api_login(request: Request):
     body = await request.json()
+
     ip = client_ip(request)
-    if hash_password(str(body.get("password", ""))) != AUTH["password_hash"]:
-        log_activity("auth", f"تلاش ورود ناموفق از {ip}", "err")
-        raise HTTPException(status_code=401, detail="رمز عبور اشتباه است")
+
+    username = str(body.get("username", "")).strip()
+    password = str(body.get("password", ""))
+
+    if not username:
+        log_activity("auth", f"نام کاربری خالی از {ip}", "err")
+        raise HTTPException(
+            status_code=400,
+            detail="نام کاربری خالی میباشد"
+        )
+
+    if not password:
+        log_activity("auth", f"رمز عبور خالی از {ip}", "err")
+        raise HTTPException(
+            status_code=400,
+            detail="رمز عبور خالی میباشد"
+        )
+
+
+    if username != AUTH["username"]:
+        log_activity("auth", f"نام کاربری اشتباه از {ip}", "err")
+        raise HTTPException(
+            status_code=401,
+            detail="نام کاربری اشتباه است"
+        )
+
+
+    if hash_password(password) != AUTH["password_hash"]:
+        log_activity("auth", f"رمز عبور اشتباه از {ip}", "err")
+        raise HTTPException(
+            status_code=401,
+            detail="رمز عبور اشتباه است"
+        )
+
+
     token = await create_session()
-    log_activity("auth", f"ورود موفق به پنل از {ip}", "ok")
-    resp = JSONResponse({"ok": True})
-    resp.set_cookie(SESSION_COOKIE, token, max_age=SESSION_TTL, httponly=True, samesite="lax", path="/")
+
+    log_activity(
+        "auth",
+        f"ورود موفق به پنل توسط {username} از {ip}",
+        "ok"
+    )
+
+
+    resp = JSONResponse({
+        "ok": True,
+        "username": username
+    })
+
+
+    resp.set_cookie(
+        SESSION_COOKIE,
+        token,
+        max_age=SESSION_TTL,
+        httponly=True,
+        samesite="lax",
+        path="/"
+    )
+
     return resp
 @app.post("/api/logout")
 async def api_logout(request: Request):
