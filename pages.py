@@ -5,10 +5,11 @@ LOGIN_HTML = r"""<!DOCTYPE html>
 <html lang="fa" dir="rtl">
 
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>DrPhp-Xui Login</title>
+<title>SpareVpn - Login</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700&display=swap" rel="stylesheet">
 
@@ -22,54 +23,133 @@ LOGIN_HTML = r"""<!DOCTYPE html>
     box-sizing:border-box;
 }
 
-html,body{
+
+html,
+body{
     width:100%;
     height:100%;
 }
+
 
 body{
+
     font-family:'Vazirmatn',sans-serif;
-    background:#101828;
+
     overflow:hidden;
+
+    background:#101828;
+
+    color:white;
+
 }
 
+
+
+/* background */
 
 .page{
+
     width:100%;
+
     height:100%;
-    display:flex;
-    align-items:center;
-    justify-content:center;
+
     position:relative;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
     overflow:hidden;
+
 }
+
 
 
 .wave{
+
     position:absolute;
-    width:700px;
-    height:700px;
-    background:rgba(64,158,255,.15);
-    border-radius:45%;
-    filter:blur(5px);
-    top:-350px;
+
+    width:6000px;
+
+    height:6000px;
+
+    background:rgba(64,158,255,.16);
+
+    border-radius:46%;
+
+    bottom:40%;
+
     left:50%;
-    transform:translateX(-50%) rotate(25deg);
+
+    margin-left:-3000px;
+
+    transform-origin:50% 48%;
+
+    rotate:125deg;
+
 }
+
 
 
 .wave.two{
-    width:850px;
-    height:850px;
-    opacity:.35;
-    transform:translateX(-50%) rotate(70deg);
+
+    opacity:.4;
+
+    rotate:70deg;
+
 }
 
 
-.login-card{
+.wave.three{
+
+    opacity:.2;
+
+    rotate:90deg;
+
+}
+
+
+
+.blur{
+
+    position:absolute;
+
+    inset:0;
+
+    background:
+
+    radial-gradient(
+        circle at top,
+        rgba(64,158,255,.18),
+        transparent 45%
+    );
+
+}
+
+
+
+/* login box */
+
+
+.wrap{
 
     width:100%;
+
     max-width:420px;
+
+    padding:20px;
+
+    z-index:10;
+
+}
+
+
+
+.card{
+
+    width:100%;
 
     background:#151f31;
 
@@ -78,11 +158,20 @@ body{
     padding:48px 40px;
 
     box-shadow:
+
     0 20px 60px rgba(0,0,0,.35);
 
-    position:relative;
+    transition:.3s;
 
-    z-index:2;
+}
+
+
+
+.card:hover{
+
+    box-shadow:
+
+    0 25px 70px rgba(0,0,0,.45);
 
 }
 
@@ -92,76 +181,22 @@ body{
 
     text-align:center;
 
-    color:white;
-
     font-size:32px;
 
     font-weight:700;
 
-    margin-bottom:8px;
+    margin-bottom:45px;
+
+    color:rgba(255,255,255,.9);
 
 }
 
 
-.subtitle{
-
-    text-align:center;
-
-    color:#98a2b3;
-
-    font-size:13px;
-
-    margin-bottom:5px;
-
-}
-
-
-.brand{
-
-    text-align:center;
-
-    color:#409eff;
-
-    font-size:14px;
-
-    margin-bottom:35px;
-
-}
-
-
-
-.logo{
-
-    width:70px;
-
-    height:70px;
-
-    border-radius:20px;
-
-    overflow:hidden;
-
-    margin:0 auto 15px;
-
-    border:1px solid rgba(255,255,255,.1);
-
-}
-
-
-
-.logo img{
-
-    width:100%;
-
-    height:100%;
-
-    object-fit:cover;
-
-}
 
 
 .form-group{
 
-    margin-bottom:18px;
+    margin-bottom:16px;
 
 }
 
@@ -171,17 +206,19 @@ body{
 
     height:50px;
 
-    background:#0f172a;
-
-    border:1px solid rgba(255,255,255,.1);
-
-    border-radius:30px;
+    width:100%;
 
     display:flex;
 
     align-items:center;
 
-    padding:0 18px;
+    background:#101828;
+
+    border:1px solid rgba(255,255,255,.08);
+
+    border-radius:30px;
+
+    overflow:hidden;
 
     transition:.2s;
 
@@ -193,33 +230,39 @@ body{
 
     border-color:#409eff;
 
-    box-shadow:0 0 0 3px rgba(64,158,255,.15);
+    box-shadow:
+
+    0 0 0 3px rgba(64,158,255,.15);
 
 }
 
 
-.input-box i{
+
+.input-icon{
+
+    width:50px;
+
+    text-align:center;
 
     color:#98a2b3;
 
-    font-size:18px;
-
-    margin-left:12px;
+    font-size:17px;
 
 }
+
 
 
 .input-box input{
 
-    width:100%;
+    flex:1;
 
     height:100%;
-
-    background:none;
 
     border:none;
 
     outline:none;
+
+    background:transparent;
 
     color:white;
 
@@ -227,23 +270,71 @@ body{
 
     font-size:14px;
 
+    padding:0 10px;
+
 }
+
 
 
 .input-box input::placeholder{
 
-    color:#667085;
+    color:#98a2b3;
 
 }
+
+
+
+/* password eye */
 
 
 .eye{
 
+    width:50px;
+
     cursor:pointer;
 
-    margin-left:0!important;
+    color:#98a2b3;
+
+    text-align:center;
 
 }
+
+
+
+
+.error{
+
+    display:none;
+
+    margin-bottom:15px;
+
+    padding:10px;
+
+    border-radius:15px;
+
+    background:rgba(239,68,68,.12);
+
+    border:1px solid rgba(239,68,68,.3);
+
+    color:#f87171;
+
+    font-size:12px;
+
+    text-align:center;
+
+}
+
+
+
+.error.show{
+
+    display:block;
+
+}
+
+
+
+/* button */
 
 
 .btn{
@@ -281,6 +372,7 @@ body{
 }
 
 
+
 .btn:hover{
 
     background:#337ecc;
@@ -293,8 +385,8 @@ body{
     opacity:.6;
 
 }
-id="kq482"
-.footer{
+
+.card-footer{
 
     margin-top:25px;
 
@@ -311,96 +403,31 @@ id="kq482"
 }
 
 
-.footer a{
+
+.card-footer a{
 
     color:#409eff;
 
     text-decoration:none;
 
-}
-
-
-
-.error{
-
-    display:none;
-
-    background:rgba(239,68,68,.12);
-
-    border:1px solid rgba(239,68,68,.3);
-
-    color:#f87171;
-
-    border-radius:12px;
-
-    padding:12px;
-
-    font-size:13px;
-
-    margin-bottom:15px;
-
-    text-align:center;
-
-}
-
-
-.error.show{
-
-    display:block;
+    margin-right:5px;
 
 }
 
 
 
-.default-box{
 
-    background:#0f172a;
+.lang-box{
 
-    border:1px solid rgba(255,255,255,.08);
-
-    border-radius:15px;
-
-    padding:12px;
-
-    margin-bottom:20px;
-
-    color:#98a2b3;
-
-    font-size:12px;
+    margin-top:18px;
 
     display:flex;
-
-    justify-content:space-between;
-
-    align-items:center;
-
-}
-
-
-
-.default-box span{
-
-    color:#409eff;
-
-    cursor:pointer;
-
-    font-weight:700;
-
-}
-
-
-
-.options{
-
-    margin-top:20px;
-
-    display:flex;
-
-    align-items:center;
 
     justify-content:center;
 
-    gap:15px;
+    align-items:center;
+
+    gap:10px;
 
     color:#98a2b3;
 
@@ -412,41 +439,15 @@ id="kq482"
 
 .lang{
 
-    height:38px;
+    background:#101828;
 
-    padding:0 15px;
+    border:1px solid rgba(255,255,255,.08);
 
     border-radius:20px;
 
-    background:#0f172a;
-
-    border:1px solid rgba(255,255,255,.1);
+    padding:7px 18px;
 
     color:white;
-
-    font-family:inherit;
-
-    cursor:pointer;
-
-}
-
-
-
-.theme{
-
-    width:38px;
-
-    height:38px;
-
-    border-radius:50%;
-
-    border:1px solid rgba(255,255,255,.1);
-
-    background:#0f172a;
-
-    color:#fbbf24;
-
-    cursor:pointer;
 
 }
 
@@ -454,13 +455,19 @@ id="kq482"
 
 @media(max-width:600px){
 
-    .login-card{
 
-        margin:15px;
+    .wrap{
+
+        padding:15px;
+
+    }
+
+
+    .card{
 
         padding:35px 22px;
 
-        border-radius:25px;
+        border-radius:26px;
 
     }
 
@@ -469,10 +476,31 @@ id="kq482"
 
         font-size:26px;
 
+        margin-bottom:35px;
+
     }
+
 
 }
 
+
+
+@media(max-height:650px){
+
+    body{
+
+        overflow:auto;
+
+    }
+
+
+    .page{
+
+        padding:20px 0;
+
+    }
+
+}
 
 
 
@@ -503,15 +531,53 @@ id="kq482"
 <div class="card">
 
 
-<h2 class="title">
+<div class="title">
 
 خوش آمدید
 
-</h2>
+</div>
+
+
+<div class="subtitle">
+
+DrPhp-Xui
+
+</div>
+
+
+<div class="brand">
+
+SpareVpn Gateway
+
+</div>
 
 
 
-<form id="form">
+<div class="error" id="error">
+
+<span id="error-text"></span>
+
+</div>
+
+
+
+<div class="default-box">
+
+<div>
+
+اطلاعات پیش فرض
+
+</div>
+
+
+<span onclick="fillDefault()">
+
+AdminRoot / Admin021
+
+</span>
+
+
+</div>
 
 
 
@@ -521,24 +587,20 @@ id="kq482"
 <div class="input-box">
 
 
-<div class="input-icon">
-
 <i class="ti ti-user"></i>
-
-</div>
 
 
 <input
 
-type="text"
-
 id="username"
+
+type="text"
 
 placeholder="نام کاربری"
 
-autocomplete="username"
+value="AdminRoot"
 
-autofocus
+autocomplete="username"
 
 >
 
@@ -547,6 +609,50 @@ autofocus
 
 
 </div>
+
+
+
+
+
+<div class="form-group">
+
+
+<div class="input-box">
+
+
+<i class="ti ti-lock"></i>
+
+
+<input
+
+id="password"
+
+type="password"
+
+placeholder="رمزعبور"
+
+value="Admin021"
+
+autocomplete="current-password"
+
+>
+
+
+
+<i class="ti ti-eye eye" id="eye"></i>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+<button class="btn" id="login-btn">
+
 
 
 
@@ -621,16 +727,21 @@ autocomplete="current-password"
 
 
 
-<div class="lang-box">
+<select class="lang" id="lang">
 
-<i class="ti ti-bulb"></i>
-
-
-<div class="lang">
+<option value="fa">
 
 🇮🇷 فارسی
 
-</div>
+</option>
+
+<option value="en">
+
+🇺🇸 English
+
+</option>
+
+</select>
 
 
 </div>
