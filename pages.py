@@ -5,13 +5,13 @@ LOGIN_HTML = r"""<!DOCTYPE html>
 <html lang="fa" dir="rtl">
 
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>ورود · RVG Gateway</title>
+<title>ورود - RVG Gateway</title>
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
 
@@ -21,23 +21,27 @@ LOGIN_HTML = r"""<!DOCTYPE html>
 *{
     margin:0;
     padding:0;
-    box-sizing:border-box
+    box-sizing:border-box;
 }
 
 
 :root{
 
-    --bg:#060f1d;
-    --card:rgba(10,22,40,.92);
+    --bg:#0b1120;
 
-    --accent:#3b82f6;
-    --accent2:#2563eb;
+    --card:#111827;
 
-    --text:#e8f4ff;
-    --dim:#5d7898;
-    --mid:#8aaaca;
+    --input:#0f172a;
 
-    --border:rgba(59,130,246,.18);
+    --primary:#409eff;
+
+    --primary-hover:#337ecc;
+
+    --text:#f1f5f9;
+
+    --muted:#94a3b8;
+
+    --border:rgba(255,255,255,.08);
 
 }
 
@@ -46,8 +50,8 @@ LOGIN_HTML = r"""<!DOCTYPE html>
 html,
 body{
 
+    width:100%;
     height:100%;
-    overflow:hidden;
 
 }
 
@@ -57,38 +61,23 @@ body{
 
     font-family:'Vazirmatn',sans-serif;
 
-    background:var(--bg);
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    padding:20px;
-
-}
-
-
-
-
-.bg{
-
-    position:fixed;
-
-    inset:0;
-
     background:
 
     radial-gradient(
-    ellipse 80% 60% at 50% 0%,
-    rgba(59,130,246,.12),
-    transparent 70%
+    circle at top,
+    rgba(64,158,255,.12),
+    transparent 35%
     ),
 
     var(--bg);
 
-    z-index:0;
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    color:var(--text);
 
 }
 
@@ -104,19 +93,28 @@ body{
     background-image:
 
     linear-gradient(
-    rgba(59,130,246,.035) 1px,
+    rgba(255,255,255,.025) 1px,
     transparent 1px
     ),
 
     linear-gradient(
     90deg,
-    rgba(59,130,246,.035) 1px,
+    rgba(255,255,255,.025) 1px,
     transparent 1px
     );
 
-    background-size:44px 44px;
 
-    z-index:0;
+    background-size:40px 40px;
+
+}
+
+
+
+.bg{
+
+    position:fixed;
+
+    inset:0;
 
 }
 
@@ -126,64 +124,7 @@ body{
 
 .orb{
 
-    position:fixed;
-
-    border-radius:50%;
-
-    filter:blur(90px);
-
-    z-index:0;
-
-    animation:float 10s infinite ease-in-out;
-
-}
-
-
-
-.o1{
-
-    width:380px;
-
-    height:380px;
-
-    background:rgba(59,130,246,.08);
-
-    top:-120px;
-
-    right:-100px;
-
-}
-
-
-
-.o2{
-
-    width:280px;
-
-    height:280px;
-
-    background:rgba(16,185,129,.05);
-
-    bottom:-80px;
-
-    left:-80px;
-
-    animation-delay:4s;
-
-}
-
-
-
-
-@keyframes float{
-
-    0%,100%{
-        transform:translateY(0)
-    }
-
-    50%{
-        transform:translateY(-20px)
-    }
+    display:none;
 
 }
 
@@ -193,39 +134,44 @@ body{
 
 .wrap{
 
+    width:100%;
+
+    max-width:380px;
+
+    padding:20px;
+
     position:relative;
 
     z-index:5;
 
-    width:100%;
-
-    max-width:400px;
-
 }
+
 
 
 
 
 .card{
 
+
     background:var(--card);
+
 
     border:1px solid var(--border);
 
-    border-radius:20px;
 
-    padding:36px 32px;
+    border-radius:12px;
 
-    backdrop-filter:blur(22px);
+
+    padding:30px;
+
 
     box-shadow:
 
-    0 25px 70px rgba(0,0,0,.55),
+    0 15px 50px rgba(0,0,0,.45);
 
-    0 0 50px rgba(59,130,246,.06);
+
 
 }
-
 
 
 
@@ -236,7 +182,7 @@ body{
 
     align-items:center;
 
-    gap:13px;
+    gap:12px;
 
     margin-bottom:28px;
 
@@ -244,19 +190,22 @@ body{
 
 
 
+
 .brand-img{
 
-    width:48px;
+    width:42px;
 
-    height:48px;
+    height:42px;
 
-    border-radius:13px;
+
+    border-radius:8px;
+
 
     overflow:hidden;
 
-    border:1px solid var(--border);
 
-    box-shadow:0 0 20px rgba(59,130,246,.25);
+    border:1px solid #263449;
+
 
 }
 
@@ -277,11 +226,11 @@ body{
 
 .brand-name{
 
-    color:var(--text);
-
     font-size:16px;
 
     font-weight:700;
+
+    color:#fff;
 
 }
 
@@ -290,9 +239,9 @@ body{
 
 .brand-sub{
 
-    color:var(--dim);
-
     font-size:11px;
+
+    color:var(--muted);
 
     margin-top:3px;
 
@@ -303,29 +252,26 @@ body{
 
 h1{
 
-    color:var(--text);
+    font-size:20px;
 
-    font-size:21px;
+    font-weight:600;
 
-    font-weight:700;
+    color:#fff;
 
-    margin-bottom:6px;
+    margin-bottom:8px;
 
 }
-
 
 
 
 
 .sub{
 
-    color:var(--mid);
-
     font-size:12px;
 
-    line-height:1.7;
+    color:var(--muted);
 
-    margin-bottom:24px;
+    margin-bottom:22px;
 
 }
 
@@ -333,23 +279,78 @@ h1{
 
 
 
-.hint{
+.err{
 
-    display:flex;
+
+    display:none;
+
 
     align-items:center;
 
-    gap:10px;
 
-    background:rgba(59,130,246,.06);
+    gap:8px;
 
-    border:1px solid rgba(59,130,246,.15);
 
-    border-radius:10px;
+    background:rgba(239,68,68,.1);
 
-    padding:10px 13px;
 
-    margin-bottom:20px;
+    border:1px solid rgba(239,68,68,.25);
+
+
+    color:#f87171;
+
+
+    border-radius:8px;
+
+
+    padding:10px;
+
+
+    margin-bottom:15px;
+
+
+    font-size:12px;
+
+
+}
+
+
+
+.err.show{
+
+    display:flex;
+
+}
+
+
+
+
+.hint{
+
+
+    display:flex;
+
+
+    align-items:center;
+
+
+    justify-content:space-between;
+
+
+    background:#0f172a;
+
+
+    border:1px solid var(--border);
+
+
+    border-radius:8px;
+
+
+    padding:10px 12px;
+
+
+    margin-bottom:18px;
+
 
 }
 
@@ -358,11 +359,10 @@ h1{
 
 .hint-label{
 
-    flex:1;
-
-    color:var(--dim);
 
     font-size:11px;
+
+    color:var(--muted);
 
 }
 
@@ -370,23 +370,19 @@ h1{
 
 .hint-val{
 
-    color:var(--accent);
 
-    background:rgba(59,130,246,.1);
+    cursor:pointer;
 
-    border:1px solid rgba(59,130,246,.25);
+    color:var(--primary);
 
-    border-radius:7px;
-
-    padding:3px 11px;
-
-    font-size:14px;
+    font-size:13px;
 
     font-family:monospace;
 
-    font-weight:700;
+    font-weight:600;
 
 }
+
 
 
 
@@ -401,13 +397,18 @@ h1{
 
 .field label{
 
+
     display:block;
 
-    color:var(--mid);
 
-    font-size:11px;
+    font-size:12px;
+
+
+    color:var(--muted);
+
 
     margin-bottom:7px;
+
 
 }
 
@@ -423,28 +424,39 @@ h1{
 
 
 
+
 input[type=password]{
 
 
     width:100%;
 
-    padding:13px 16px 13px 42px;
 
-    background:rgba(0,0,0,.28);
+    height:44px;
 
-    border:1px solid var(--border);
 
-    border-radius:11px;
+    background:var(--input);
+
+
+    border:1px solid #263449;
+
+
+    border-radius:8px;
+
 
     color:white;
 
+
+    padding:0 15px 0 40px;
+
+
     font-family:inherit;
 
-    font-size:14px;
 
     outline:none;
 
+
     transition:.2s;
+
 
 }
 
@@ -452,91 +464,88 @@ input[type=password]{
 
 input[type=password]:focus{
 
-    border-color:rgba(59,130,246,.6);
 
-    box-shadow:0 0 0 3px rgba(59,130,246,.12);
+    border-color:var(--primary);
+
+
+    box-shadow:0 0 0 3px rgba(64,158,255,.15);
+
 
 }
-
 
 
 
 
 .ic{
 
+
     position:absolute;
 
-    left:13px;
+
+    left:12px;
+
 
     top:50%;
 
+
     transform:translateY(-50%);
 
-    color:var(--dim);
+
+    color:#64748b;
+
 
 }
-
-
-
-
-
-.err{
-
-    display:none;
-
-    background:rgba(239,68,68,.08);
-
-    border:1px solid rgba(239,68,68,.2);
-
-    border-radius:10px;
-
-    padding:10px;
-
-    color:#f87171;
-
-    font-size:12px;
-
-    margin-bottom:14px;
-
-}
-
 
 
 
 
 .btn{
 
+
     width:100%;
 
-    padding:13px;
+
+    height:44px;
+
 
     border:0;
 
-    border-radius:11px;
 
-    cursor:pointer;
+    border-radius:8px;
 
-    background:
 
-    linear-gradient(
-    135deg,
-    var(--accent),
-    var(--accent2)
-    );
+    background:var(--primary);
+
 
     color:white;
 
+
     font-family:inherit;
+
 
     font-size:14px;
 
+
     font-weight:600;
+
+
+    cursor:pointer;
+
+
+    display:flex;
+
+
+    justify-content:center;
+
+
+    align-items:center;
+
+
+    gap:8px;
+
 
     transition:.2s;
 
-    box-shadow:
-
-    0 8px 25px rgba(37,99,235,.35);
 
 }
 
@@ -544,7 +553,9 @@ input[type=password]:focus{
 
 .btn:hover{
 
-    transform:translateY(-1px);
+
+    background:var(--primary-hover);
+
 
 }
 
@@ -552,264 +563,322 @@ input[type=password]:focus{
 
 .btn:disabled{
 
-    opacity:.5;
+    opacity:.6;
 
 }
-
 
 
 
 
 .footer{
 
-    margin-top:22px;
 
-    padding-top:18px;
+    margin-top:20px;
+
+
+    padding-top:15px;
+
 
     border-top:1px solid var(--border);
 
+
     text-align:center;
 
-    color:var(--dim);
 
     font-size:11px;
 
+
+    color:var(--muted);
+
+
 }
 
 
 
-@media(max-width:450px){
+.footer a{
+
+
+    color:var(--primary);
+
+
+    text-decoration:none;
+
+
+    margin-right:5px;
+
+
+}
+
+
+
+
+@media(max-width:420px){
+
 
 .card{
 
-    padding:28px 22px;
+    padding:25px;
 
 }
 
+
 }
+
 
 
 </style>
+
 </head>
+
+
 
 <body>
 
-<div class="bg"></div>
-<div class="grid"></div>
 
-<div class="orb o1"></div>
-<div class="orb o2"></div>
+<div class="bg"></div>
+
+<div class="grid"></div>
 
 
 <div class="wrap">
 
+
 <div class="card">
 
-    <div class="brand">
 
-        <div class="brand-img">
-            <img src="https://yt3.googleusercontent.com/vA6bYj1V386YmibpWRNFJtsRRqwfY_U9wnb7gmW90eRVXyNB7gAfjj1XPs5UX0cdKdQprrI=s160-c-k-c0x00ffffff-no-rj"
-            alt="logo">
-        </div>
-
-        <div>
-            <div class="brand-name">
-                SpareVpn
-            </div>
-
-            <div class="brand-sub">
-                RVG Gateway - v10.2
-            </div>
-        </div>
-
-    </div>
+<div class="brand">
 
 
-    <h1>
-        ورود به پنل
-    </h1>
+<div class="brand-img">
+
+<img src="https://yt3.googleusercontent.com/vA6bYj1V386YmibpWRNFJtsRRqwfY_U9wnb7gmW90eRVXyNB7gAfjj1XPs5UX0cdKdQprrI=s160-c-k-c0x00ffffff-no-rj">
+
+</div>
 
 
-    <p class="sub">
-        رمز عبور را برای دسترسی به داشبورد وارد کنید
-    </p>
+<div>
+
+<div class="brand-name">
+SpareVpn
+</div>
+
+<div class="brand-sub">
+RVG Gateway - v10.2
+</div>
+
+
+</div>
+
+
+</div>
 
 
 
-    <div class="err" id="err">
-
-        <i class="ti ti-alert-circle"></i>
-
-        <span id="err-text"></span>
-
-    </div>
+<h1>
+ورود به پنل
+</h1>
 
 
-
-    <div class="hint">
-
-        <span class="hint-label">
-            رمز پیش‌فرض سیستم
-        </span>
-
-
-        <span class="hint-val"
-        onclick="document.getElementById('pw').value='123456';document.getElementById('pw').focus();">
-            admin021
-        </span>
-
-    </div>
+<p class="sub">
+رمز عبور را برای ورود وارد کنید
+</p>
 
 
 
 
-    <form id="form">
+<div class="err" id="err">
 
+<i class="ti ti-alert-circle"></i>
 
-        <div class="field">
+<span id="err-text"></span>
 
-            <label>
-                رمز عبور
-            </label>
-
-
-            <div class="inp-wrap">
-
-
-                <input
-                type="password"
-                id="pw"
-                placeholder="رمز عبور را وارد کنید"
-                autofocus
-                required
-                >
-
-
-                <i class="ti ti-lock ic"></i>
-
-
-            </div>
-
-        </div>
-
-
-
-
-        <button class="btn" type="submit" id="btn">
-
-            <i class="ti ti-login-2"></i>
-
-            ورود به داشبورد
-
-        </button>
-
-
-
-    </form>
+</div>
 
 
 
 
 
-    <div class="footer">
+<div class="hint">
 
-        کانال رسمی
-
-        <a href="https://t.me/SpareVpn" target="_blank">
-
-            <i class="ti ti-brand-telegram"></i>
-
-            @SpareVpn
-
-        </a>
+<span class="hint-label">
+رمز پیش فرض
+</span>
 
 
-    </div>
+<span class="hint-val"
+onclick="document.getElementById('pw').value='123456'">
+
+admin021
+
+</span>
+
+
+</div>
+
+
+
+
+
+<form id="form">
+
+
+<div class="field">
+
+
+<label>
+رمز عبور
+</label>
+
+
+<div class="inp-wrap">
+
+
+<input
+
+id="pw"
+
+type="password"
+
+placeholder="Password"
+
+autocomplete="current-password"
+
+required
+
+>
+
+
+<i class="ti ti-lock ic"></i>
+
+
+</div>
+
+
+</div>
+
+
+
+<button class="btn" id="btn">
+
+
+<i class="ti ti-login-2"></i>
+
+ورود
+
+
+</button>
+
+
+
+</form>
+
+
+
+
+
+<div class="footer">
+
+کانال رسمی
+
+<a href="https://t.me/SpareVpn" target="_blank">
+
+<i class="ti ti-brand-telegram"></i>
+
+@SpareVpn
+
+</a>
+
+
+</div>
 
 
 
 </div>
 
 </div>
-
 
 
 
 <script>
 
-document.getElementById("form").addEventListener("submit", async function(e){
-
-    e.preventDefault();
+document.getElementById("form").addEventListener("submit",async e=>{
 
 
-    const btn = document.getElementById("btn");
-    const err = document.getElementById("err");
-    const errText = document.getElementById("err-text");
+e.preventDefault();
 
 
-    err.classList.remove("show");
+const btn=document.getElementById("btn");
 
-    btn.disabled = true;
+const err=document.getElementById("err");
 
-    btn.innerHTML =
-    '<i class="ti ti-loader-2"></i> در حال ورود...';
-
+const text=document.getElementById("err-text");
 
 
-    try{
+btn.disabled=true;
 
 
-        const response = await fetch("/api/login",{
-
-            method:"POST",
-
-            headers:{
-                "Content-Type":"application/json"
-            },
-
-            body:JSON.stringify({
-
-                password:
-                document.getElementById("pw").value
-
-            })
-
-        });
+err.classList.remove("show");
 
 
 
-        if(!response.ok){
-
-            const data = await response.json().catch(()=>({}));
-
-            throw new Error(
-                data.detail || "خطا در ورود"
-            );
-
-        }
+btn.innerHTML="در حال ورود...";
 
 
 
-        window.location.href="/dashboard";
+try{
+
+
+let r=await fetch("/api/login",{
+
+method:"POST",
+
+headers:{
+
+"Content-Type":"application/json"
+
+},
+
+body:JSON.stringify({
+
+password:document.getElementById("pw").value
+
+})
+
+});
 
 
 
-    }catch(error){
+if(!r.ok){
+
+let d=await r.json().catch(()=>({}));
+
+throw Error(d.detail || "خطا در ورود");
+
+}
 
 
-        errText.textContent = error.message;
 
-        err.classList.add("show");
-
-
-        btn.disabled=false;
+location.href="/dashboard";
 
 
-        btn.innerHTML =
-        '<i class="ti ti-login-2"></i> ورود به داشبورد';
+
+}catch(e){
 
 
-    }
+text.textContent=e.message;
+
+
+err.classList.add("show");
+
+
+btn.disabled=false;
+
+
+btn.innerHTML='<i class="ti ti-login-2"></i> ورود';
+
+
+
+}
 
 
 });
@@ -819,9 +888,9 @@ document.getElementById("form").addEventListener("submit", async function(e){
 
 
 </body>
+
 </html>
 """
-
 
 DASHBOARD_HTML = r"""<!DOCTYPE html>
 <html lang="fa" dir="rtl">
