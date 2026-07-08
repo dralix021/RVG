@@ -750,10 +750,9 @@ headers:{
 
 body:JSON.stringify({
 
+username:document.getElementById("username").value,
 
-password:
-document.getElementById("pw").value
-
+password:document.getElementById("pw").value
 
 })
 
