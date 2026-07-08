@@ -1,24 +1,81 @@
 name: Sync Upstream (Auto-update forks)
 
 on:
-  # هر push به main → upstream را آپدیت می‌کند
+  # هر Push به main → آپدیت upstream
   push:
     branches: [main]
-  # هر ۶ ساعت یک بار چک می‌کند
+
+  # هر ۶ ساعت یک‌بار چک می‌کند
   schedule:
     - cron: '0 */6 * * *'
+
+  # امکان اجرای دستی
   workflow_dispatch:
 
 jobs:
-  sync:
+  sync-upstream:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Push to forks (notify GitHub)
+      - name: Configure Git
         run: |
-          echo "✅ Upstream updated at $(date)"
-          echo "Forks should use GitHub's 'Sync fork' button or enable auto-sync."
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Add upstream remote (if not exists)
+        run: |
+          if ! git remote | grep -q '^upstream$'; then
+            echo "Adding upstream remote..."
+            git remote add upstream ${{ github.event.repository.clone_url }}
+          fi
+
+      - name: Fetch latest upstream changes
+        run: |
+          git fetch upstream main --tags --force
+          echo "✅ Latest upstream fetched"
+
+      - name: Sync main branch with upstream
+        run: |
+          git checkout main
+          git merge upstream/main --ff-only || {
+            echo "⚠️  Merge conflict or non-fast-forward. Attempting rebase..."
+            git rebase upstream/main || {
+              echo "❌ Could not sync automatically."
+              exit 1
+            }
+          }
+          echo "✅ Successfully synced with upstream"
+
+      - name: Push changes to origin
+        run: |
+          git push origin main --force-with-lease
+          echo "🚀 Changes pushed to origin/main"
+
+      - name: Summary
+        run: |
+          echo "========================================"
+          echo "✅ Upstream Sync Completed Successfully"
+          echo "Repository : ${{ github.repository }}"
+          echo "Branch     : main"
+          echo "Time       : $(date '+%Y-%m-%d %H:%M:%S UTC')"
+          echo "========================================"
+
+      - name: Create PR if needed (optional)
+        if: failure()
+        uses: peter-evans/create-pull-request@v6
+        with:
+          title: "chore: Sync with upstream"
+          body: |
+            Automated sync with upstream repository.
+            This PR was created because automatic merge failed.
+          branch: sync/upstream
+          base: main
