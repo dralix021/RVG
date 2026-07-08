@@ -1,8 +1,7 @@
 # pages.py  -  RVG Gateway v10.2
 # شامل: LOGIN_HTML, DASHBOARD_HTML, get_public_page_html()
 
-LOGIN_HTML = r"""
-<!DOCTYPE html>
+LOGIN_HTML = r"""<!DOCTYPE html>
 <html lang="fa" dir="rtl">
 
 <head>
@@ -16,7 +15,6 @@ LOGIN_HTML = r"""
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
 
-
 <style>
 
 *{
@@ -26,55 +24,36 @@ LOGIN_HTML = r"""
 }
 
 
-:root{
-
-    --bg:#101828;
-    --card:#151f31;
-    --input:#101828;
-
-    --primary:#409eff;
-    --primary-hover:#337ecc;
-
-    --text:#ffffff;
-    --muted:#98a2b3;
-
-    --border:rgba(255,255,255,.10);
-
-}
-
-
-
 html,
 body{
-
     width:100%;
     height:100%;
-
 }
-
 
 
 body{
 
     font-family:'Vazirmatn',sans-serif;
 
+    overflow:hidden;
+
     background:#101828;
 
     color:white;
-
-    overflow:hidden;
 
 }
 
 
 
+/* background */
 
-
-.under{
+.page{
 
     width:100%;
 
     height:100%;
+
+    position:relative;
 
     display:flex;
 
@@ -82,37 +61,31 @@ body{
 
     align-items:center;
 
-    position:relative;
-
     overflow:hidden;
 
 }
 
 
 
-
-
 .wave{
 
-    opacity:.6;
-
     position:absolute;
-
-    bottom:40%;
-
-    left:50%;
 
     width:6000px;
 
     height:6000px;
 
-    background:rgba(14,73,181,.22);
+    background:rgba(64,158,255,.16);
+
+    border-radius:46%;
+
+    bottom:40%;
+
+    left:50%;
 
     margin-left:-3000px;
 
     transform-origin:50% 48%;
-
-    border-radius:46%;
 
     rotate:125deg;
 
@@ -120,17 +93,16 @@ body{
 
 
 
-.wave2{
+.wave.two{
 
-    opacity:.35;
+    opacity:.4;
 
     rotate:70deg;
 
 }
 
 
-
-.wave3{
+.wave.three{
 
     opacity:.2;
 
@@ -140,21 +112,34 @@ body{
 
 
 
+.blur{
+
+    position:absolute;
+
+    inset:0;
+
+    background:
+
+    radial-gradient(
+        circle at top,
+        rgba(64,158,255,.18),
+        transparent 45%
+    );
+
+}
+
+
+
+/* login box */
 
 
 .wrap{
 
     width:100%;
 
-    max-width:520px;
+    max-width:420px;
 
     padding:20px;
-
-    display:flex;
-
-    justify-content:center;
-
-    position:relative;
 
     z-index:10;
 
@@ -162,28 +147,19 @@ body{
 
 
 
-
-
 .card{
 
     width:100%;
 
-    max-width:430px;
-
-
     background:#151f31;
-
 
     border-radius:32px;
 
-
-    padding:48px;
-
+    padding:48px 40px;
 
     box-shadow:
 
     0 20px 60px rgba(0,0,0,.35);
-
 
     transition:.3s;
 
@@ -191,92 +167,17 @@ body{
 
 
 
-
 .card:hover{
 
     box-shadow:
 
-    0 25px 80px rgba(0,0,0,.45);
+    0 25px 70px rgba(0,0,0,.45);
 
 }
 
 
 
-
-
-.brand{
-
-    display:flex;
-
-    justify-content:center;
-
-    align-items:center;
-
-    gap:14px;
-
-    margin-bottom:15px;
-
-}
-
-
-
-
-
-.brand-img{
-
-    width:55px;
-
-    height:55px;
-
-    border-radius:15px;
-
-    overflow:hidden;
-
-}
-
-
-
-
-
-.brand-img img{
-
-    width:100%;
-
-    height:100%;
-
-    object-fit:cover;
-
-}
-
-
-
-
-
-.brand-name{
-
-    font-size:20px;
-
-    font-weight:700;
-
-}
-
-
-
-
-.brand-sub{
-
-    font-size:11px;
-
-    color:#98a2b3;
-
-}
-
-
-
-
-
-
-h1{
+.title{
 
     text-align:center;
 
@@ -284,71 +185,30 @@ h1{
 
     font-weight:700;
 
-    margin:20px 0 12px;
+    margin-bottom:45px;
+
+    color:rgba(255,255,255,.9);
 
 }
 
 
 
 
+.form-group{
 
-.sub{
-
-    text-align:center;
-
-    font-size:13px;
-
-    color:#98a2b3;
-
-    margin-bottom:30px;
+    margin-bottom:16px;
 
 }
 
 
 
+.input-box{
 
-.err{
+    height:50px;
 
-    display:none;
-
-    align-items:center;
-
-    gap:8px;
-
-    background:rgba(239,68,68,.1);
-
-    border:1px solid rgba(239,68,68,.25);
-
-    color:#f87171;
-
-    padding:12px 15px;
-
-    border-radius:20px;
-
-    margin-bottom:15px;
-
-    font-size:12px;
-
-}
-
-
-
-.err.show{
+    width:100%;
 
     display:flex;
-
-}
-
-
-
-
-
-
-.hint{
-
-    display:flex;
-
-    justify-content:space-between;
 
     align-items:center;
 
@@ -358,143 +218,124 @@ h1{
 
     border-radius:30px;
 
-    padding:10px 18px;
-
-    margin-bottom:20px;
-
-}
-
-
-
-
-.hint-label{
-
-    color:#98a2b3;
-
-    font-size:12px;
-
-}
-
-
-
-
-.hint-val{
-
-    color:#409eff;
-
-    cursor:pointer;
-
-    font-weight:600;
-
-    font-size:13px;
-
-}
-
-
-
-
-
-.field{
-
-    margin-bottom:20px;
-
-}
-
-
-
-
-.field label{
-
-    display:block;
-
-    font-size:12px;
-
-    color:#cbd5e1;
-
-    margin-bottom:8px;
-
-}
-
-
-
-
-.inp-wrap{
-
-    position:relative;
-
-}
-
-
-
-
-input[type=password]{
-
-
-    width:100%;
-
-
-    height:50px;
-
-
-    background:#101828;
-
-
-    border:1px solid rgba(255,255,255,.12);
-
-
-    border-radius:30px;
-
-
-    color:white;
-
-
-    font-family:inherit;
-
-
-    font-size:14px;
-
-
-    padding:0 50px 0 20px;
-
-
-    outline:none;
-
+    overflow:hidden;
 
     transition:.2s;
 
-
 }
 
 
 
-input[type=password]:focus{
+.input-box:focus-within{
 
     border-color:#409eff;
 
-    box-shadow:0 0 0 3px rgba(64,158,255,.15);
+    box-shadow:
+
+    0 0 0 3px rgba(64,158,255,.15);
+
+}
+
+
+
+.input-icon{
+
+    width:50px;
+
+    text-align:center;
+
+    color:#98a2b3;
+
+    font-size:17px;
+
+}
+
+
+
+.input-box input{
+
+    flex:1;
+
+    height:100%;
+
+    border:none;
+
+    outline:none;
+
+    background:transparent;
+
+    color:white;
+
+    font-family:inherit;
+
+    font-size:14px;
+
+    padding:0 10px;
+
+}
+
+
+
+.input-box input::placeholder{
+
+    color:#98a2b3;
+
+}
+
+
+
+/* password eye */
+
+
+.eye{
+
+    width:50px;
+
+    cursor:pointer;
+
+    color:#98a2b3;
+
+    text-align:center;
 
 }
 
 
 
 
-.ic{
+.error{
 
-    position:absolute;
+    display:none;
 
-    right:20px;
+    margin-bottom:15px;
 
-    top:50%;
+    padding:10px;
 
-    transform:translateY(-50%);
+    border-radius:15px;
 
-    color:#94a3b8;
+    background:rgba(239,68,68,.12);
 
-    font-size:18px;
+    border:1px solid rgba(239,68,68,.3);
+
+    color:#f87171;
+
+    font-size:12px;
+
+    text-align:center;
 
 }
 
-</style>
+
+
+.error.show{
+
+    display:block;
+
+}
+
+
+
+/* button */
+
 
 .btn{
 
@@ -539,16 +380,13 @@ input[type=password]:focus{
 }
 
 
-
 .btn:disabled{
 
     opacity:.6;
 
 }
 
-
-
-.footer{
+.card-footer{
 
     margin-top:25px;
 
@@ -566,7 +404,7 @@ input[type=password]:focus{
 
 
 
-.footer a{
+.card-footer a{
 
     color:#409eff;
 
@@ -576,6 +414,42 @@ input[type=password]:focus{
 
 }
 
+
+
+
+.lang-box{
+
+    margin-top:18px;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    gap:10px;
+
+    color:#98a2b3;
+
+    font-size:13px;
+
+}
+
+
+
+.lang{
+
+    background:#101828;
+
+    border:1px solid rgba(255,255,255,.08);
+
+    border-radius:20px;
+
+    padding:7px 18px;
+
+    color:white;
+
+}
 
 
 
@@ -591,16 +465,18 @@ input[type=password]:focus{
 
     .card{
 
-        padding:30px 22px;
+        padding:35px 22px;
 
-        border-radius:24px;
+        border-radius:26px;
 
     }
 
 
-    h1{
+    .title{
 
         font-size:26px;
+
+        margin-bottom:35px;
 
     }
 
@@ -609,7 +485,7 @@ input[type=password]:focus{
 
 
 
-@media(max-height:700px){
+@media(max-height:650px){
 
     body{
 
@@ -618,11 +494,9 @@ input[type=password]:focus{
     }
 
 
-    .under{
+    .page{
 
-        align-items:flex-start;
-
-        padding-top:20px;
+        padding:20px 0;
 
     }
 
@@ -638,14 +512,16 @@ input[type=password]:focus{
 <body>
 
 
-<div class="under">
+<div class="page">
 
+
+<div class="blur"></div>
 
 <div class="wave"></div>
 
-<div class="wave wave2"></div>
+<div class="wave two"></div>
 
-<div class="wave wave3"></div>
+<div class="wave three"></div>
 
 
 
@@ -655,91 +531,11 @@ input[type=password]:focus{
 <div class="card">
 
 
+<h2 class="title">
 
-<div class="brand">
+خوش آمدید
 
-
-<div class="brand-img">
-
-<img src="https://yt3.googleusercontent.com/vA6bYj1V386YmibpWRNFJtsRRqwfY_U9wnb7gmW90eRVXyNB7gAfjj1XPs5UX0cdKdQprrI=s160-c-k-c0x00ffffff-no-rj">
-
-</div>
-
-
-
-<div>
-
-<div class="brand-name">
-SpareVpn
-</div>
-
-
-<div class="brand-sub">
-RVG Gateway
-</div>
-
-
-</div>
-
-
-</div>
-
-
-
-
-
-<h1>
-Welcome
-</h1>
-
-
-
-<p class="sub">
-برای ورود به پنل مدیریت رمز عبور را وارد کنید
-</p>
-
-
-
-
-<div class="err" id="err">
-
-
-<i class="ti ti-alert-circle"></i>
-
-
-<span id="err-text"></span>
-
-
-</div>
-
-
-
-
-
-
-
-<div class="hint">
-
-
-<span class="hint-label">
-رمز پیش فرض
-</span>
-
-
-
-<span class="hint-val"
-onclick="document.getElementById('pw').value='123456';document.getElementById('pw').focus();">
-
-admin021
-
-</span>
-
-
-</div>
-
-
-
-
+</h2>
 
 
 
@@ -747,36 +543,34 @@ admin021
 
 
 
-<div class="field">
+<div class="form-group">
 
 
-<label>
-رمز عبور
-</label>
+<div class="input-box">
 
 
+<div class="input-icon">
 
-<div class="inp-wrap">
+<i class="ti ti-user"></i>
+
+</div>
 
 
 <input
 
-id="pw"
+type="text"
 
-type="password"
+id="username"
 
-placeholder="Password"
+placeholder="نام کاربری"
 
-autocomplete="current-password"
+autocomplete="username"
 
-required
+autofocus
 
 >
 
 
-<i class="ti ti-lock ic"></i>
-
-
 </div>
 
 
@@ -784,6 +578,56 @@ required
 
 
 
+
+
+<div class="form-group">
+
+
+<div class="input-box">
+
+
+<div class="input-icon">
+
+<i class="ti ti-lock"></i>
+
+</div>
+
+
+
+<input
+
+type="password"
+
+id="pw"
+
+placeholder="رمزعبور"
+
+autocomplete="current-password"
+
+>
+
+
+
+<div class="eye" onclick="showPass()">
+
+<i class="ti ti-eye" id="eye"></i>
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+
+
+<div class="error" id="err">
+
+<span id="err-text"></span>
+
+</div>
 
 
 
@@ -792,7 +636,6 @@ required
 
 
 <i class="ti ti-login-2"></i>
-
 
 ورود
 
@@ -806,10 +649,25 @@ required
 
 
 
+<div class="lang-box">
+
+<i class="ti ti-bulb"></i>
+
+
+<div class="lang">
+
+🇮🇷 فارسی
+
+</div>
+
+
+</div>
 
 
 
-<div class="footer">
+
+
+<div class="card-footer">
 
 
 کانال رسمی
@@ -820,31 +678,24 @@ required
 
 <i class="ti ti-brand-telegram"></i>
 
-
 @SpareVpn
 
 
 </a>
 
 
-
-</div>
-
-
-
-</div>
-
-
-</div>
-
-
 </div>
 
 
 
 
+</div>
 
 
+</div>
+
+
+</div>
 
 <script>
 
