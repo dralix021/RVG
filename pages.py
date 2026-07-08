@@ -589,7 +589,8 @@ input[type=password]:focus{
 }
 
 
-id="8k4pz"
+id="4q8hz"
+"""
 </style>
 </head>
 
@@ -611,17 +612,19 @@ id="8k4pz"
 
 <div class="brand-img">
 
-<img src="https://yt3.googleusercontent.com/vA6bYj1V386YmibpWRNFJtsRRqwfY_U9wnb7gmW90eRVXyNB7gAfjj1XPs5UX0cdKdQprrI=s160-c-k-c0x00ffffff-no-rj"
-alt="codebox">
+<img 
+src="https://yt3.googleusercontent.com/vA6bYj1V386YmibpWRNFJtsRRqwfY_U9wnb7gmW90eRVXyNB7gAfjj1XPs5UX0cdKdQprrI=s160-c-k-c0x00ffffff-no-rj"
+alt="logo">
 
 </div>
 
 
-<div>
+<div class="brand-info">
 
 <div class="brand-name">
 SpareVpn
 </div>
+
 
 <div class="brand-sub">
 RVG Gateway · v10.2
@@ -630,9 +633,12 @@ RVG Gateway · v10.2
 
 </div>
 
+
 </div>
 
 
+
+<div class="login-title">
 
 <h1>
 ورود به پنل
@@ -640,8 +646,12 @@ RVG Gateway · v10.2
 
 
 <p class="sub">
-رمز عبور را برای دسترسی به داشبورد وارد کنید
+رمز عبور را برای ورود به داشبورد وارد کنید
 </p>
+
+
+</div>
+
 
 
 
@@ -655,19 +665,23 @@ RVG Gateway · v10.2
 
 
 
+
+
 <div class="hint">
 
-<span class="hint-label">
+<div class="hint-label">
+
 رمز پیش‌فرض سیستم
-</span>
+
+</div>
 
 
-<span class="hint-val"
-onclick="fillPassword()">
+<div class="hint-val"
+onclick="document.getElementById('pw').value='Admin021';document.getElementById('pw').focus();">
 
 admin021
 
-</span>
+</div>
 
 
 </div>
@@ -675,15 +689,20 @@ admin021
 
 
 
+
 <form id="form">
+
 
 
 <div class="field">
 
 
 <label>
+
 رمز عبور
+
 </label>
+
 
 
 <div class="inp-wrap">
@@ -716,6 +735,8 @@ required
 
 
 
+
+
 <button
 
 class="btn"
@@ -723,6 +744,7 @@ class="btn"
 type="submit"
 
 id="btn">
+
 
 <i class="ti ti-login-2"></i>
 
@@ -738,15 +760,26 @@ id="btn">
 
 
 
+
 <div class="footer">
 
-کانال رسمی
 
-<a href="https://t.me/SpareVpn" target="_blank">
+<span>
+کانال رسمی
+</span>
+
+
+<a 
+
+href="https://t.me/SpareVpn"
+
+target="_blank">
+
 
 <i class="ti ti-brand-telegram"></i>
 
 @SpareVpn
+
 
 </a>
 
@@ -761,152 +794,107 @@ id="btn">
 
 
 
+
 <script>
 
-
-const form = document.getElementById('form');
-
-const password = document.getElementById('pw');
-
-const button = document.getElementById('btn');
-
-const errorBox = document.getElementById('err');
-
-const errorText = document.getElementById('err-text');
+document
+.getElementById('form')
+.addEventListener('submit',async e=>{
 
 
+e.preventDefault();
+
+
+const btn=document.getElementById('btn');
+
+const err=document.getElementById('err');
+
+const errText=document.getElementById('err-text');
+
+
+err.classList.remove('show');
+
+
+btn.disabled=true;
+
+
+btn.innerHTML=
+
+'<i class="ti ti-loader-2 spin"></i> در حال ورود...';
 
 
 
-function fillPassword(){
+try{
 
-    password.value = 'Admin021';
 
-    password.focus();
+const res=await fetch('/api/login',{
+
+method:'POST',
+
+headers:{
+
+'Content-Type':'application/json'
+
+},
+
+body:JSON.stringify({
+
+password:
+document.getElementById('pw').value
+
+})
+
+});
+
+
+
+if(!res.ok){
+
+const data=await res.json().catch(()=>({}));
+
+throw new Error(
+data.detail || 'خطا در ورود'
+);
 
 }
 
 
 
+window.location.href='/dashboard';
 
 
-form.addEventListener('submit', async (e)=>{
 
+}catch(error){
 
-    e.preventDefault();
 
+errText.textContent=error.message;
 
-    const value = password.value.trim();
 
+err.classList.add('show');
 
-    if(!value){
 
-        return;
+btn.disabled=false;
 
-    }
 
+btn.innerHTML=
 
+'<i class="ti ti-login-2"></i> ورود به داشبورد';
 
-    errorBox.classList.remove('show');
 
 
-    button.disabled = true;
-
-
-    button.innerHTML =
-
-    '<i class="ti ti-loader-2 spin"></i> در حال ورود...';
-
-
-
-    try{
-
-
-        const response = await fetch(
-
-            '/api/login',
-
-            {
-
-            method:'POST',
-
-            headers:{
-
-                'Content-Type':'application/json'
-
-            },
-
-            body:JSON.stringify({
-
-                password:value
-
-            })
-
-            }
-
-        );
-
-
-
-        if(!response.ok){
-
-
-            const data = await response
-
-            .json()
-
-            .catch(()=>({}));
-
-
-            throw new Error(
-
-                data.detail || 'رمز عبور اشتباه است'
-
-            );
-
-
-        }
-
-
-
-        window.location.href='/dashboard';
-
-
-
-    }
-
-    catch(error){
-
-
-
-        errorText.textContent = error.message;
-
-
-        errorBox.classList.add('show');
-
-
-        button.disabled=false;
-
-
-        button.innerHTML=
-
-        '<i class="ti ti-login-2"></i> ورود به داشبورد';
-
-
-    }
+}
 
 
 
 });
-
-
 
 </script>
 
 
 </body>
 
-</html>"""
+</html>
+"""
 
 
 DASHBOARD_HTML = r"""<!DOCTYPE html>
