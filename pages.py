@@ -6909,48 +6909,166 @@ html,body{{min-height:100%;background:var(--bg);font-family:var(--serif);color:v
 </style>
 </head>
 <body>
-<div class="bg-fx"></div><div class="grid-fx"></div>
+<div class="bg-fx"></div>
+<div class="grid-fx"></div>
+
 <div class="toast" id="toast"></div>
+
 <div class="qr-modal" id="qr-modal" onclick="this.classList.remove('open')">
   <div class="qr-box" onclick="event.stopPropagation()">
     <div class="qr-title" id="qr-label">QR Code</div>
-    <div class="qr-img"><img id="qr-img" src="" alt="QR"></div>
-    <button class="btn btn-g" style="width:100%;justify-content:center" onclick="document.getElementById('qr-modal').classList.remove('open')"><i class="ti ti-x"></i> بستن</button>
+
+    <div class="qr-img">
+      <img id="qr-img" src="" alt="QR">
+    </div>
+
+    <button class="btn btn-g"
+    style="width:100%;justify-content:center"
+    onclick="document.getElementById('qr-modal').classList.remove('open')">
+
+      <i class="ti ti-x"></i>
+      بستن
+
+    </button>
+
   </div>
 </div>
+
+
+<!-- سایدبار سنایی اینجا اضافه می‌شود -->
+
+
 <div class="wrap">
+
   <div class="top">
+
     <div class="brand">
-      <div class="brand-img"><img src="https://yt3.googleusercontent.com/vA6bYj1V386YmibpWRNFJtsRRqwfY_U9wnb7gmW90eRVXyNB7gAfjj1XPs5UX0cdKdQprrI=s160-c-k-c0x00ffffff-no-rj" alt="cb"></div>
-      <div><div class="brand-name">codebox</div><div class="brand-sub">RVG Gateway · v9.2</div></div>
+
+      <div class="brand-img">
+        <img src="https://yt3.googleusercontent.com/vA6bYj1V386YmibpWRNFJtsRRqwfY_U9wnb7gmW90eRVXyNB7gAfjj1XPs5UX0cdKdQprrI=s160-c-k-c0x00ffffff-no-rj" alt="cb">
+      </div>
+
+      <div>
+        <div class="brand-name">
+          SpareVpn
+        </div>
+
+        <div class="brand-sub">
+          RVG Gateway · v9.2
+        </div>
+      </div>
+
     </div>
-    <div class="top-actions">
-      <button class="icon-btn" id="theme-toggle" onclick="toggleTheme()" title="تغییر تم"><i class="ti ti-sun" id="theme-icon"></i></button>
-      <a class="icon-btn" href="https://t.me/CodeBoxo" target="_blank" title="کانال تلگرام"><i class="ti ti-brand-telegram"></i></a>
+       <div class="top-actions">
+
+      <button class="icon-btn"
+      id="theme-toggle"
+      onclick="toggleTheme()"
+      title="تغییر تم">
+
+        <i class="ti ti-sun" id="theme-icon"></i>
+
+      </button>
+
+
+      <a class="icon-btn"
+      href="https://t.me/SpareVpn"
+      target="_blank"
+      title="کانال تلگرام">
+
+        <i class="ti ti-brand-telegram"></i>
+
+      </a>
+
     </div>
+
   </div>
+
+
   <div id="root">
-    <div class="empty-state"><i class="ti ti-loader-2" style="animation:spin 1s linear infinite"></i>در حال بارگذاری...</div>
+
+    <div class="empty-state">
+
+      <i class="ti ti-loader-2"
+      style="animation:spin 1s linear infinite"></i>
+
+      در حال بارگذاری...
+
+    </div>
+
   </div>
-  <div class="footer">کانال رسمی: <a href="https://t.me/CodeBoxo" target="_blank">@SpareVpn</a> · RVG Gateway v10.2</div>
+
+
+  <div class="footer">
+
+    کانال رسمی:
+    <a href="https://t.me/SpareVpn" target="_blank">
+      @SpareVpn
+    </a>
+
+    · RVG Gateway v10.2
+
+  </div>
+
+
 </div>
+
+
 <script>
+
 const UUID_KEY='{uuid_key}';
+
 let savedPw='';
 
-let isDark=localStorage.getItem('rvg-pub-theme')!=='light';
-function applyTheme(dark){{
-  document.documentElement.setAttribute('data-theme',dark?'dark':'light');
-  document.getElementById('theme-icon').className='ti '+(dark?'ti-sun':'ti-moon');
-}}
-function toggleTheme(){{isDark=!isDark;localStorage.setItem('rvg-pub-theme',isDark?'dark':'light');applyTheme(isDark)}}
+let isDark = localStorage.getItem('rvg-pub-theme') !== 'light';
+
+function applyTheme(dark){
+
+  document.documentElement.setAttribute(
+    'data-theme',
+    dark ? 'dark' : 'light'
+  );
+
+  const icon = document.getElementById('theme-icon');
+
+  if(icon){
+    icon.className = 'ti ' + (dark ? 'ti-sun' : 'ti-moon');
+  }
+
+}
+
+
+function toggleTheme(){
+
+  isDark = !isDark;
+
+  localStorage.setItem(
+    'rvg-pub-theme',
+    isDark ? 'dark' : 'light'
+  );
+
+  applyTheme(isDark);
+
+}
+
+
 applyTheme(isDark);
 
-function toast(msg,type=''){{
+
+
+function toast(msg,type=''){
+
   const t=document.getElementById('toast');
-  t.textContent=msg;t.className='toast show'+(type?' '+type:'');
-  setTimeout(()=>t.classList.remove('show'),2400);
-}}
+
+  t.textContent=msg;
+
+  t.className='toast show' + (type ? ' '+type : '');
+
+  setTimeout(()=>{
+    t.classList.remove('show');
+  },2400);
+
+}
 function esc(s){{return String(s||'').replace(/[&<>"']/g,c=>({{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}}[c]))}}
 function fmtB(b){{if(!b||b===0)return '0 B';if(b<1024)return b+' B';if(b<1024**2)return (b/1024).toFixed(1)+' KB';if(b<1024**3)return (b/1024**2).toFixed(2)+' MB';return (b/1024**3).toFixed(2)+' GB'}}
 function toFa(n){{return String(n).replace(/\\d/g,d=>'۰۱۲۳۴۵۶۷۸۹'[d])}}
@@ -7034,7 +7152,6 @@ function renderContent(d){{
     sub   : l.sub_url + (savedPw ? '?pw=' + encodeURIComponent(savedPw) : ''),
     label : l.label,
   }}));
-
   document.getElementById('root').innerHTML=`
     <div class="sub-info">
       <div class="sub-eyebrow"><i class="ti ti-folders"></i> گروه دسترسی</div>
@@ -7062,76 +7179,95 @@ function renderContent(d){{
       <button class="copy-all-btn" onclick="copyAllConfigs()"><i class="ti ti-clipboard-copy"></i> کپی همه (${{toFa(activeCount)}})</button>
     </div>
 
-    <div class="stats-bar">
-      <div class="stat-card">
-        <div class="stat-label">کانفیگ‌های فعال</div>
-        <div class="stat-val">${{toFa(activeCount)}}</div>
-        <div class="stat-sub">از ${{toFa(d.links.length)}} کانفیگ</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">اتصالات زنده</div>
-        <div class="stat-val">${{toFa(d.active_connections)}}</div>
-        <div class="stat-sub" style="color:var(--green-t);display:flex;align-items:center;gap:4px"><span class="dot"></span> آنلاین</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">کل مصرف</div>
-        <div class="stat-val" style="font-size:17px;margin-top:3px">${{esc(d.total_used_fmt)}}</div>
-        <div class="stat-sub">همه کانفیگ‌ها</div>
-      </div>
-    </div>
+  <div class="stats-bar">
+  <div class="stat-card">
+    <div class="stat-label">کانفیگ‌های فعال</div>
+    <div class="stat-val">${{toFa(activeCount)}}</div>
+    <div class="stat-sub">از ${{toFa(d.links.length)}} کانفیگ</div>
+  </div>
 
-    <div class="cfg-title"><i class="ti ti-link"></i> کانفیگ‌ها (${{toFa(d.links.length)}} عدد)</div>
-    <div class="cfg-grid">
-      ${{d.links.map((l, i) => {{
-        const pct = l.limit_bytes === 0 ? 0 : Math.min(100, l.used_bytes / l.limit_bytes * 100);
-        const bc  = pct > 90 ? 'var(--red)' : pct > 70 ? 'var(--amber)' : 'var(--green)';
-        const lim = l.limit_bytes === 0 ? '∞' : fmtB(l.limit_bytes);
-        return `
-          <div class="cfg-card${{l.active ? '' : ' inactive'}}">
-            <div class="cfg-top">
-              <div class="cfg-head">
-                <div>
-                  <div class="cfg-label">${{esc(l.label)}}</div>
-                  <div class="cfg-badges">
-                    ${{protoChip(l.protocol)}}
-                    ${{l.connections > 0 ? `<span class="conn-chip"><span class="dot"></span> ${{toFa(l.connections)}} اتصال</span>` : ''}}
-                  </div>
-                </div>
-                <span class="cfg-status ${{l.active ? 'ok' : 'no'}}">${{l.active ? '<i class="ti ti-circle-check"></i> فعال' : '<i class="ti ti-circle-x"></i> غیرفعال'}}</span>
-              </div>
-              <div class="cfg-usage">
-                <div class="ubar"><div class="ubar-f" style="width:${{pct}}%;background:${{bc}}"></div></div>
-                <div class="utxt"><span>${{esc(l.used_fmt)}} مصرف شده</span><span>سهمیه: ${{lim}}</span></div>
+  <div class="stat-card">
+    <div class="stat-label">اتصالات زنده</div>
+    <div class="stat-val">${{toFa(d.active_connections)}}</div>
+    <div class="stat-sub" style="color:var(--green-t);display:flex;align-items:center;gap:4px">
+      <span class="dot"></span> آنلاین
+    </div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-label">کل مصرف</div>
+    <div class="stat-val" style="font-size:17px;margin-top:3px">${{esc(d.total_used_fmt)}}</div>
+    <div class="stat-sub">همه کانفیگ‌ها</div>
+  </div>
+</div>
+<div class="cfg-title"><i class="ti ti-link"></i> کانفیگ‌ها (${{toFa(d.links.length)}} عدد)</div>
+<div class="cfg-grid">
+  ${{d.links.map((l, i) => {{
+    const pct = l.limit_bytes === 0 ? 0 : Math.min(100, l.used_bytes / l.limit_bytes * 100);
+    const bc  = pct > 90 ? 'var(--red)' : pct > 70 ? 'var(--amber)' : 'var(--green)';
+    const lim = l.limit_bytes === 0 ? '∞' : fmtB(l.limit_bytes);
+    return `
+      <div class="cfg-card${{l.active ? '' : ' inactive'}}">
+        <div class="cfg-top">
+          <div class="cfg-head">
+            <div>
+              <div class="cfg-label">${{esc(l.label)}}</div>
+              <div class="cfg-badges">
+                ${{protoChip(l.protocol)}}
+                ${{l.connections > 0 ? `<span class="conn-chip"><span class="dot"></span> ${{toFa(l.connections)}} اتصال</span>` : ''}}
               </div>
             </div>
-            <div class="cfg-tear"></div>
-            <div class="cfg-bottom">
-              <button class="cfg-link-toggle" id="vt-${{i}}" onclick="toggleLink(${{i}})">
-                <span class="ltl"><i class="ti ti-eye"></i> <span>نمایش لینک کانفیگ</span></span>
-                <i class="ti ti-chevron-down"></i>
-              </button>
-              <div class="cfg-vless-wrap" id="vw-${{i}}">
-                <div class="cfg-vless-inner">
-                  <div class="cfg-vless">${{esc(l.vless_link)}}</div>
-                </div>
-              </div>
-              <div class="cfg-actions">
-                <button class="btn btn-p"
-                  onclick="navigator.clipboard.writeText(window._rvgLinks[${{i}}].vless).then(()=>toast('لینک کپی شد ✓','ok'))">
-                  <i class="ti ti-copy"></i> کپی لینک
-                </button>
-                <button class="btn btn-g"
-                  onclick="showQR(window._rvgLinks[${{i}}].label, window._rvgLinks[${{i}}].vless)">
-                  <i class="ti ti-qrcode"></i> QR
-                </button>
-              </div>
+            <span class="cfg-status ${{l.active ? 'ok' : 'no'}}">
+              ${{l.active ? '<i class="ti ti-circle-check"></i> فعال' : '<i class="ti ti-circle-x"></i> غیرفعال'}}
+            </span>
+          </div>
+
+          <div class="cfg-usage">
+            <div class="ubar">
+              <div class="ubar-f" style="width:${{pct}}%;background:${{bc}}"></div>
+            </div>
+            <div class="utxt">
+              <span>${{esc(l.used_fmt)}} مصرف شده</span>
+              <span>سهمیه: ${{lim}}</span>
             </div>
           </div>
-        `;
-      }}).join('')}}
-    </div>
-  `;
-  setTimeout(() => autoRefresh(), 30000);
+        </div>
+
+        <div class="cfg-tear"></div>
+
+        <div class="cfg-bottom">
+          <button class="cfg-link-toggle" id="vt-${{i}}" onclick="toggleLink(${{i}})">
+            <span class="ltl">
+              <i class="ti ti-eye"></i> 
+              <span>نمایش لینک کانفیگ</span>
+            </span>
+            <i class="ti ti-chevron-down"></i>
+          </button>
+            <div class="cfg-vless-wrap" id="vw-${{i}}">
+  <div class="cfg-vless-inner">
+    <div class="cfg-vless">${{esc(l.vless_link)}}</div>
+  </div>
+</div>
+
+<div class="cfg-actions">
+  <button class="btn btn-p"
+    onclick="navigator.clipboard.writeText(window._rvgLinks[${{i}}].vless).then(()=>toast('لینک کپی شد ✓','ok'))">
+    <i class="ti ti-copy"></i> کپی لینک
+  </button>
+
+  <button class="btn btn-g"
+    onclick="showQR(window._rvgLinks[${{i}}].label, window._rvgLinks[${{i}}].vless)">
+    <i class="ti ti-qrcode"></i> QR
+  </button>
+</div>
+
+</div>
+</div>
+`;
+}}).join('')}}
+</div>
+`;
+setTimeout(() => autoRefresh(), 30000);
 }}
 
 function copyAllConfigs(){{
