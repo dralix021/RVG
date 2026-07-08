@@ -1,4 +1,4 @@
-# pages.py  -  RVG Gateway v9.2
+# pages.py  -  RVG Gateway v10.2
 # شامل: LOGIN_HTML, DASHBOARD_HTML, get_public_page_html()
 
 LOGIN_HTML = r"""<!DOCTYPE html>
@@ -58,14 +58,14 @@ input:focus+.ic{color:var(--accent)}
   <div class="card">
     <div class="brand">
       <div class="brand-img"><img src="https://yt3.googleusercontent.com/vA6bYj1V386YmibpWRNFJtsRRqwfY_U9wnb7gmW90eRVXyNB7gAfjj1XPs5UX0cdKdQprrI=s160-c-k-c0x00ffffff-no-rj" alt="codebox"></div>
-      <div><div class="brand-name">codebox</div><div class="brand-sub">RVG Gateway · v9.2</div></div>
+      <div><div class="brand-name">SpareVpn</div><div class="brand-sub">RVG Gateway · v10.2</div></div>
     </div>
     <h1>ورود به پنل</h1>
     <p class="sub">رمز عبور را برای دسترسی به داشبورد وارد کنید</p>
     <div class="err" id="err"><i class="ti ti-alert-circle"></i><span id="err-text"></span></div>
     <div class="hint">
       <span class="hint-label">رمز پیش‌فرض سیستم</span>
-      <span class="hint-val" onclick="document.getElementById('pw').value='123456';document.getElementById('pw').focus()">123456</span>
+      <span class="hint-val" onclick="document.getElementById('pw').value='123456';document.getElementById('pw').focus()">admin021</span>
     </div>
     <form id="form">
       <div class="field">
@@ -77,7 +77,7 @@ input:focus+.ic{color:var(--accent)}
       </div>
       <button class="btn" type="submit" id="btn"><i class="ti ti-login-2"></i> ورود به داشبورد</button>
     </form>
-    <div class="footer">کانال رسمی<a href="https://t.me/CodeBoxo" target="_blank"><i class="ti ti-brand-telegram"></i>@CodeBoxo</a></div>
+    <div class="footer">کانال رسمی<a href="https://t.me/SpareVpn" target="_blank"><i class="ti ti-brand-telegram"></i>@SpareVpn</a></div>
   </div>
 </div>
 <script>
@@ -856,8 +856,8 @@ a{color:inherit;text-decoration:none}
     </div>
   </div>
   <div class="dash-footer">
-    <span class="df-text">codebox RVG Gateway v9.2 · Railway · 2025</span>
-    <a class="df-link" href="https://t.me/CodeBoxo" target="_blank"><i class="ti ti-brand-telegram"></i> t.me/CodeBoxo</a>
+    <span class="df-text">SpareVpn RVG Gateway v10.2 · Railway · 2026</span>
+    <a class="df-link" href="https://t.me/CodeBoxo" target="_blank"><i class="ti ti-brand-telegram"></i> t.me/SpareVpn</a>
   </div>
 </section>
 <section class="pg" id="pg-links">
@@ -1994,7 +1994,7 @@ html,body{{min-height:100%;background:var(--bg);font-family:var(--serif);color:v
   <div id="root">
     <div class="empty-state"><i class="ti ti-loader-2" style="animation:spin 1s linear infinite"></i>در حال بارگذاری...</div>
   </div>
-  <div class="footer">کانال رسمی: <a href="https://t.me/CodeBoxo" target="_blank">@CodeBoxo</a> · RVG Gateway v9.2</div>
+  <div class="footer">کانال رسمی: <a href="https://t.me/CodeBoxo" target="_blank">@SpareVpn</a> · RVG Gateway v10.2</div>
 </div>
 <script>
 const UUID_KEY='{uuid_key}';
