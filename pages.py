@@ -531,53 +531,15 @@ body{
 <div class="card">
 
 
-<div class="title">
+<h2 class="title">
 
 خوش آمدید
 
-</div>
-
-
-<div class="subtitle">
-
-DrPhp-Xui
-
-</div>
-
-
-<div class="brand">
-
-SpareVpn Gateway
-
-</div>
+</h2>
 
 
 
-<div class="error" id="error">
-
-<span id="error-text"></span>
-
-</div>
-
-
-
-<div class="default-box">
-
-<div>
-
-اطلاعات پیش فرض
-
-</div>
-
-
-<span onclick="fillDefault()">
-
-AdminRoot / Admin021
-
-</span>
-
-
-</div>
+<form id="form">
 
 
 
@@ -586,73 +548,33 @@ AdminRoot / Admin021
 
 <div class="input-box">
 
+
+<div class="input-icon">
 
 <i class="ti ti-user"></i>
 
+</div>
+
 
 <input
-
-id="username"
 
 type="text"
 
-placeholder="نام کاربری"
+id="username"
 
-value="AdminRoot"
+placeholder="نام کاربری"
 
 autocomplete="username"
 
->
-
-
-</div>
-
-
-</div>
-
-
-
-
-
-<div class="form-group">
-
-
-<div class="input-box">
-
-
-<i class="ti ti-lock"></i>
-
-
-<input
-
-id="password"
-
-type="password"
-
-placeholder="رمزعبور"
-
-value="Admin021"
-
-autocomplete="current-password"
+autofocus
 
 >
 
 
-
-<i class="ti ti-eye eye" id="eye"></i>
-
-
 </div>
 
 
 </div>
-
-
-
-
-
-<button class="btn" id="login-btn">
-
 
 
 
@@ -727,21 +649,16 @@ autocomplete="current-password"
 
 
 
-<select class="lang" id="lang">
+<div class="lang-box">
 
-<option value="fa">
+<i class="ti ti-bulb"></i>
+
+
+<div class="lang">
 
 🇮🇷 فارسی
 
-</option>
-
-<option value="en">
-
-🇺🇸 English
-
-</option>
-
-</select>
+</div>
 
 
 </div>
