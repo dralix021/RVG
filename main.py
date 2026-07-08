@@ -30,20 +30,12 @@ logger = logging.getLogger("RVG-Gateway")
 # ====================== Config ======================
 IRAN_TZ = ZoneInfo("Asia/Tehran")
 
+app = FastAPI(title="RVG Gateway - DrPhp", docs_url=None, redoc_url=None)
 CONFIG = {
-    "port": int(os.environ.get("PORT", 8000)),
-    "secret": os.environ.get("SECRET_KEY", secrets.token_urlsafe(32)),
-    "host": os.environ.get("RAILWAY_PUBLIC_DOMAIN", "localhost"),
-    "admin_password": os.environ.get("ADMIN_PASSWORD", "admin021"),
+    "port": int(os.environ.get("PORT", 8000)),
+    "secret": os.environ.get("SECRET_KEY", secrets.token_urlsafe(32)),
+    "host": os.environ.get("RAILWAY_PUBLIC_DOMAIN", "localhost"),
 }
-
-app = FastAPI(
-    title="RVG Gateway",
-    version="10.2",
-    docs_url=None,
-    redoc_url=None,
-    openapi_url=None
-)
 
 app.add_middleware(
     CORSMiddleware,
@@ -301,7 +293,14 @@ async def shutdown():
 # ====================== Basic Routes ======================
 @app.get("/")
 async def root():
-    return {"service": "RVG Gateway", "version": app.version, "status": "active"}
+    return {
+        "service": "RVG Gateway",
+        "version": app.version,
+        "status": "active",
+        "channel": "https://t.me/SpareVpn",
+        "docs": "Protected",
+        "ping": "/ping"
+    }
 
 
 @app.get("/health")
