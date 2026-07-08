@@ -5,11 +5,10 @@ LOGIN_HTML = r"""<!DOCTYPE html>
 <html lang="fa" dir="rtl">
 
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>SpareVpn - Login</title>
+<title>DrPhp-Xui Login</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700&display=swap" rel="stylesheet">
 
@@ -23,133 +22,54 @@ LOGIN_HTML = r"""<!DOCTYPE html>
     box-sizing:border-box;
 }
 
-
-html,
-body{
+html,body{
     width:100%;
     height:100%;
 }
 
-
 body{
-
     font-family:'Vazirmatn',sans-serif;
-
-    overflow:hidden;
-
     background:#101828;
-
-    color:white;
-
+    overflow:hidden;
 }
 
-
-
-/* background */
 
 .page{
-
     width:100%;
-
     height:100%;
-
-    position:relative;
-
     display:flex;
-
-    justify-content:center;
-
     align-items:center;
-
+    justify-content:center;
+    position:relative;
     overflow:hidden;
-
 }
-
 
 
 .wave{
-
     position:absolute;
-
-    width:6000px;
-
-    height:6000px;
-
-    background:rgba(64,158,255,.16);
-
-    border-radius:46%;
-
-    bottom:40%;
-
+    width:700px;
+    height:700px;
+    background:rgba(64,158,255,.15);
+    border-radius:45%;
+    filter:blur(5px);
+    top:-350px;
     left:50%;
-
-    margin-left:-3000px;
-
-    transform-origin:50% 48%;
-
-    rotate:125deg;
-
+    transform:translateX(-50%) rotate(25deg);
 }
-
 
 
 .wave.two{
-
-    opacity:.4;
-
-    rotate:70deg;
-
+    width:850px;
+    height:850px;
+    opacity:.35;
+    transform:translateX(-50%) rotate(70deg);
 }
 
 
-.wave.three{
-
-    opacity:.2;
-
-    rotate:90deg;
-
-}
-
-
-
-.blur{
-
-    position:absolute;
-
-    inset:0;
-
-    background:
-
-    radial-gradient(
-        circle at top,
-        rgba(64,158,255,.18),
-        transparent 45%
-    );
-
-}
-
-
-
-/* login box */
-
-
-.wrap{
+.login-card{
 
     width:100%;
-
     max-width:420px;
-
-    padding:20px;
-
-    z-index:10;
-
-}
-
-
-
-.card{
-
-    width:100%;
 
     background:#151f31;
 
@@ -158,20 +78,11 @@ body{
     padding:48px 40px;
 
     box-shadow:
-
     0 20px 60px rgba(0,0,0,.35);
 
-    transition:.3s;
+    position:relative;
 
-}
-
-
-
-.card:hover{
-
-    box-shadow:
-
-    0 25px 70px rgba(0,0,0,.45);
+    z-index:2;
 
 }
 
@@ -181,22 +92,76 @@ body{
 
     text-align:center;
 
+    color:white;
+
     font-size:32px;
 
     font-weight:700;
 
-    margin-bottom:45px;
+    margin-bottom:8px;
 
-    color:rgba(255,255,255,.9);
+}
+
+
+.subtitle{
+
+    text-align:center;
+
+    color:#98a2b3;
+
+    font-size:13px;
+
+    margin-bottom:5px;
+
+}
+
+
+.brand{
+
+    text-align:center;
+
+    color:#409eff;
+
+    font-size:14px;
+
+    margin-bottom:35px;
 
 }
 
 
 
+.logo{
+
+    width:70px;
+
+    height:70px;
+
+    border-radius:20px;
+
+    overflow:hidden;
+
+    margin:0 auto 15px;
+
+    border:1px solid rgba(255,255,255,.1);
+
+}
+
+
+
+.logo img{
+
+    width:100%;
+
+    height:100%;
+
+    object-fit:cover;
+
+}
+
 
 .form-group{
 
-    margin-bottom:16px;
+    margin-bottom:18px;
 
 }
 
@@ -206,19 +171,17 @@ body{
 
     height:50px;
 
-    width:100%;
+    background:#0f172a;
+
+    border:1px solid rgba(255,255,255,.1);
+
+    border-radius:30px;
 
     display:flex;
 
     align-items:center;
 
-    background:#101828;
-
-    border:1px solid rgba(255,255,255,.08);
-
-    border-radius:30px;
-
-    overflow:hidden;
+    padding:0 18px;
 
     transition:.2s;
 
@@ -230,39 +193,33 @@ body{
 
     border-color:#409eff;
 
-    box-shadow:
-
-    0 0 0 3px rgba(64,158,255,.15);
+    box-shadow:0 0 0 3px rgba(64,158,255,.15);
 
 }
 
 
-
-.input-icon{
-
-    width:50px;
-
-    text-align:center;
+.input-box i{
 
     color:#98a2b3;
 
-    font-size:17px;
+    font-size:18px;
+
+    margin-left:12px;
 
 }
-
 
 
 .input-box input{
 
-    flex:1;
+    width:100%;
 
     height:100%;
+
+    background:none;
 
     border:none;
 
     outline:none;
-
-    background:transparent;
 
     color:white;
 
@@ -270,71 +227,23 @@ body{
 
     font-size:14px;
 
-    padding:0 10px;
-
 }
-
 
 
 .input-box input::placeholder{
 
-    color:#98a2b3;
+    color:#667085;
 
 }
-
-
-
-/* password eye */
 
 
 .eye{
 
-    width:50px;
-
     cursor:pointer;
 
-    color:#98a2b3;
-
-    text-align:center;
+    margin-left:0!important;
 
 }
-
-
-
-
-.error{
-
-    display:none;
-
-    margin-bottom:15px;
-
-    padding:10px;
-
-    border-radius:15px;
-
-    background:rgba(239,68,68,.12);
-
-    border:1px solid rgba(239,68,68,.3);
-
-    color:#f87171;
-
-    font-size:12px;
-
-    text-align:center;
-
-}
-
-
-
-.error.show{
-
-    display:block;
-
-}
-
-
-
-/* button */
 
 
 .btn{
@@ -372,7 +281,6 @@ body{
 }
 
 
-
 .btn:hover{
 
     background:#337ecc;
@@ -385,8 +293,8 @@ body{
     opacity:.6;
 
 }
-
-.card-footer{
+id="kq482"
+.footer{
 
     margin-top:25px;
 
@@ -403,31 +311,96 @@ body{
 }
 
 
-
-.card-footer a{
+.footer a{
 
     color:#409eff;
 
     text-decoration:none;
 
-    margin-right:5px;
+}
+
+
+
+.error{
+
+    display:none;
+
+    background:rgba(239,68,68,.12);
+
+    border:1px solid rgba(239,68,68,.3);
+
+    color:#f87171;
+
+    border-radius:12px;
+
+    padding:12px;
+
+    font-size:13px;
+
+    margin-bottom:15px;
+
+    text-align:center;
+
+}
+
+
+.error.show{
+
+    display:block;
 
 }
 
 
 
+.default-box{
 
-.lang-box{
+    background:#0f172a;
 
-    margin-top:18px;
+    border:1px solid rgba(255,255,255,.08);
+
+    border-radius:15px;
+
+    padding:12px;
+
+    margin-bottom:20px;
+
+    color:#98a2b3;
+
+    font-size:12px;
 
     display:flex;
 
-    justify-content:center;
+    justify-content:space-between;
 
     align-items:center;
 
-    gap:10px;
+}
+
+
+
+.default-box span{
+
+    color:#409eff;
+
+    cursor:pointer;
+
+    font-weight:700;
+
+}
+
+
+
+.options{
+
+    margin-top:20px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:15px;
 
     color:#98a2b3;
 
@@ -439,15 +412,41 @@ body{
 
 .lang{
 
-    background:#101828;
+    height:38px;
 
-    border:1px solid rgba(255,255,255,.08);
+    padding:0 15px;
 
     border-radius:20px;
 
-    padding:7px 18px;
+    background:#0f172a;
+
+    border:1px solid rgba(255,255,255,.1);
 
     color:white;
+
+    font-family:inherit;
+
+    cursor:pointer;
+
+}
+
+
+
+.theme{
+
+    width:38px;
+
+    height:38px;
+
+    border-radius:50%;
+
+    border:1px solid rgba(255,255,255,.1);
+
+    background:#0f172a;
+
+    color:#fbbf24;
+
+    cursor:pointer;
 
 }
 
@@ -455,19 +454,13 @@ body{
 
 @media(max-width:600px){
 
+    .login-card{
 
-    .wrap{
-
-        padding:15px;
-
-    }
-
-
-    .card{
+        margin:15px;
 
         padding:35px 22px;
 
-        border-radius:26px;
+        border-radius:25px;
 
     }
 
@@ -475,28 +468,6 @@ body{
     .title{
 
         font-size:26px;
-
-        margin-bottom:35px;
-
-    }
-
-
-}
-
-
-
-@media(max-height:650px){
-
-    body{
-
-        overflow:auto;
-
-    }
-
-
-    .page{
-
-        padding:20px 0;
 
     }
 
@@ -515,31 +486,71 @@ body{
 <div class="page">
 
 
-<div class="blur"></div>
-
 <div class="wave"></div>
 
 <div class="wave two"></div>
 
-<div class="wave three"></div>
+
+
+<div class="login-card">
 
 
 
-<div class="wrap">
+<div class="logo">
+
+<img src="https://yt3.googleusercontent.com/vA6bYj1V386YmibpWRNFJtsRRqwfY_U9wnb7gmW90eRVXyNB7gAfjj1XPs5UX0cdKdQprrI=s160-c-k-c0x00ffffff-no-rj">
+
+</div>
 
 
-<div class="card">
 
-
-<h2 class="title">
+<div class="title">
 
 خوش آمدید
 
-</h2>
+</div>
+
+
+<div class="subtitle">
+
+DrPhp-Xui
+
+</div>
+
+
+<div class="brand">
+
+SpareVpn Gateway
+
+</div>
 
 
 
-<form id="form">
+<div class="error" id="error">
+
+<span id="error-text"></span>
+
+</div>
+
+
+
+<div class="default-box">
+
+<div>
+
+اطلاعات پیش فرض
+
+</div>
+
+
+<span onclick="fillDefault()">
+
+AdminRoot / Admin021
+
+</span>
+
+
+</div>
 
 
 
@@ -549,24 +560,20 @@ body{
 <div class="input-box">
 
 
-<div class="input-icon">
-
 <i class="ti ti-user"></i>
-
-</div>
 
 
 <input
 
-type="text"
-
 id="username"
+
+type="text"
 
 placeholder="نام کاربری"
 
-autocomplete="username"
+value="AdminRoot"
 
-autofocus
+autocomplete="username"
 
 >
 
@@ -586,21 +593,18 @@ autofocus
 <div class="input-box">
 
 
-<div class="input-icon">
-
 <i class="ti ti-lock"></i>
-
-</div>
-
 
 
 <input
 
+id="password"
+
 type="password"
 
-id="pw"
-
 placeholder="رمزعبور"
+
+value="Admin021"
 
 autocomplete="current-password"
 
@@ -608,11 +612,7 @@ autocomplete="current-password"
 
 
 
-<div class="eye" onclick="showPass()">
-
-<i class="ti ti-eye" id="eye"></i>
-
-</div>
+<i class="ti ti-eye eye" id="eye"></i>
 
 
 </div>
@@ -623,19 +623,11 @@ autocomplete="current-password"
 
 
 
-<div class="error" id="err">
 
-<span id="err-text"></span>
-
-</div>
+<button class="btn" id="login-btn">
 
 
-
-
-<button class="btn" id="btn" type="submit">
-
-
-<i class="ti ti-login-2"></i>
+<i class="ti ti-login"></i>
 
 ورود
 
@@ -644,52 +636,53 @@ autocomplete="current-password"
 
 
 
-</form>
+<div class="options">
 
 
-
-
-<div class="lang-box">
+<button class="theme" id="theme-btn">
 
 <i class="ti ti-bulb"></i>
 
+</button>
 
-<div class="lang">
+
+
+<select class="lang" id="lang">
+
+<option value="fa">
 
 🇮🇷 فارسی
 
-</div>
+</option>
+
+<option value="en">
+
+🇺🇸 English
+
+</option>
+
+</select>
 
 
 </div>
 
 
 
-
-
-<div class="card-footer">
-
+<div class="footer">
 
 کانال رسمی
 
-
-<a href="https://t.me/SpareVpn" target="_blank">
-
+<a href="https://t.me/SpareVpn">
 
 <i class="ti ti-brand-telegram"></i>
 
 @SpareVpn
-
 
 </a>
 
 
 </div>
 
-
-
-
-</div>
 
 
 </div>
