@@ -589,8 +589,6 @@ input[type=password]:focus{
 }
 
 
-id="4q8hz"
-"""
 </style>
 </head>
 
@@ -607,184 +605,126 @@ id="4q8hz"
 
 <div class="card">
 
+    <div class="brand">
 
-<div class="brand">
+        <div class="brand-img">
+            <img src="https://yt3.googleusercontent.com/vA6bYj1V386YmibpWRNFJtsRRqwfY_U9wnb7gmW90eRVXyNB7gAfjj1XPs5UX0cdKdQprrI=s160-c-k-c0x00ffffff-no-rj"
+            alt="logo">
+        </div>
 
-<div class="brand-img">
+        <div>
+            <div class="brand-name">
+                SpareVpn
+            </div>
 
-<img 
-src="https://yt3.googleusercontent.com/vA6bYj1V386YmibpWRNFJtsRRqwfY_U9wnb7gmW90eRVXyNB7gAfjj1XPs5UX0cdKdQprrI=s160-c-k-c0x00ffffff-no-rj"
-alt="logo">
+            <div class="brand-sub">
+                RVG Gateway - v10.2
+            </div>
+        </div>
 
-</div>
+    </div>
 
 
-<div class="brand-info">
+    <h1>
+        ورود به پنل
+    </h1>
 
-<div class="brand-name">
-SpareVpn
-</div>
 
+    <p class="sub">
+        رمز عبور را برای دسترسی به داشبورد وارد کنید
+    </p>
 
-<div class="brand-sub">
-RVG Gateway · v10.2
-</div>
 
 
-</div>
+    <div class="err" id="err">
 
+        <i class="ti ti-alert-circle"></i>
 
-</div>
+        <span id="err-text"></span>
 
+    </div>
 
 
-<div class="login-title">
 
-<h1>
-ورود به پنل
-</h1>
+    <div class="hint">
 
+        <span class="hint-label">
+            رمز پیش‌فرض سیستم
+        </span>
 
-<p class="sub">
-رمز عبور را برای ورود به داشبورد وارد کنید
-</p>
 
+        <span class="hint-val"
+        onclick="document.getElementById('pw').value='123456';document.getElementById('pw').focus();">
+            admin021
+        </span>
 
-</div>
+    </div>
 
 
 
 
-<div class="err" id="err">
+    <form id="form">
 
-<i class="ti ti-alert-circle"></i>
 
-<span id="err-text"></span>
+        <div class="field">
 
-</div>
+            <label>
+                رمز عبور
+            </label>
 
 
+            <div class="inp-wrap">
 
 
+                <input
+                type="password"
+                id="pw"
+                placeholder="رمز عبور را وارد کنید"
+                autofocus
+                required
+                >
 
-<div class="hint">
 
-<div class="hint-label">
+                <i class="ti ti-lock ic"></i>
 
-رمز پیش‌فرض سیستم
 
-</div>
+            </div>
 
+        </div>
 
-<div class="hint-val"
-onclick="document.getElementById('pw').value='Admin021';document.getElementById('pw').focus();">
 
-admin021
 
-</div>
 
+        <button class="btn" type="submit" id="btn">
 
-</div>
+            <i class="ti ti-login-2"></i>
 
+            ورود به داشبورد
 
+        </button>
 
 
 
-<form id="form">
+    </form>
 
 
 
-<div class="field">
 
 
-<label>
+    <div class="footer">
 
-رمز عبور
+        کانال رسمی
 
-</label>
+        <a href="https://t.me/SpareVpn" target="_blank">
 
+            <i class="ti ti-brand-telegram"></i>
 
+            @SpareVpn
 
-<div class="inp-wrap">
+        </a>
 
 
-<input
-
-type="password"
-
-id="pw"
-
-placeholder="رمز عبور را وارد کنید"
-
-autocomplete="current-password"
-
-autofocus
-
-required
-
->
-
-
-<i class="ti ti-lock ic"></i>
-
-
-</div>
-
-
-</div>
-
-
-
-
-
-<button
-
-class="btn"
-
-type="submit"
-
-id="btn">
-
-
-<i class="ti ti-login-2"></i>
-
-ورود به داشبورد
-
-
-</button>
-
-
-
-</form>
-
-
-
-
-
-<div class="footer">
-
-
-<span>
-کانال رسمی
-</span>
-
-
-<a 
-
-href="https://t.me/SpareVpn"
-
-target="_blank">
-
-
-<i class="ti ti-brand-telegram"></i>
-
-@SpareVpn
-
-
-</a>
-
-
-</div>
+    </div>
 
 
 
@@ -797,102 +737,88 @@ target="_blank">
 
 <script>
 
-document
-.getElementById('form')
-.addEventListener('submit',async e=>{
+document.getElementById("form").addEventListener("submit", async function(e){
+
+    e.preventDefault();
 
 
-e.preventDefault();
+    const btn = document.getElementById("btn");
+    const err = document.getElementById("err");
+    const errText = document.getElementById("err-text");
 
 
-const btn=document.getElementById('btn');
+    err.classList.remove("show");
 
-const err=document.getElementById('err');
+    btn.disabled = true;
 
-const errText=document.getElementById('err-text');
-
-
-err.classList.remove('show');
-
-
-btn.disabled=true;
-
-
-btn.innerHTML=
-
-'<i class="ti ti-loader-2 spin"></i> در حال ورود...';
+    btn.innerHTML =
+    '<i class="ti ti-loader-2"></i> در حال ورود...';
 
 
 
-try{
+    try{
 
 
-const res=await fetch('/api/login',{
+        const response = await fetch("/api/login",{
 
-method:'POST',
+            method:"POST",
 
-headers:{
+            headers:{
+                "Content-Type":"application/json"
+            },
 
-'Content-Type':'application/json'
+            body:JSON.stringify({
 
-},
+                password:
+                document.getElementById("pw").value
 
-body:JSON.stringify({
+            })
 
-password:
-document.getElementById('pw').value
-
-})
-
-});
-
-
-
-if(!res.ok){
-
-const data=await res.json().catch(()=>({}));
-
-throw new Error(
-data.detail || 'خطا در ورود'
-);
-
-}
+        });
 
 
 
-window.location.href='/dashboard';
+        if(!response.ok){
+
+            const data = await response.json().catch(()=>({}));
+
+            throw new Error(
+                data.detail || "خطا در ورود"
+            );
+
+        }
 
 
 
-}catch(error){
-
-
-errText.textContent=error.message;
-
-
-err.classList.add('show');
-
-
-btn.disabled=false;
-
-
-btn.innerHTML=
-
-'<i class="ti ti-login-2"></i> ورود به داشبورد';
+        window.location.href="/dashboard";
 
 
 
-}
+    }catch(error){
 
+
+        errText.textContent = error.message;
+
+        err.classList.add("show");
+
+
+        btn.disabled=false;
+
+
+        btn.innerHTML =
+        '<i class="ti ti-login-2"></i> ورود به داشبورد';
+
+
+    }
 
 
 });
+
 
 </script>
 
 
 </body>
-
 </html>
 """
 
