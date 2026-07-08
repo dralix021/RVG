@@ -7020,38 +7020,12 @@ const UUID_KEY='{uuid_key}';
 
 let savedPw='';
 
-let isDark = localStorage.getItem('rvg-pub-theme') !== 'light';
-
+let isDark=localStorage.getItem('x4g-pub-theme')!=='light';
 function applyTheme(dark){{
-
-  document.documentElement.setAttribute(
-    'data-theme',
-    dark ? 'dark' : 'light'
-  );
-
-  const icon = document.getElementById('theme-icon');
-
-  if(icon){{
-    icon.className = 'ti ' + (dark ? 'ti-sun' : 'ti-moon');
-  }}
-
+  document.documentElement.setAttribute('data-theme',dark?'dark':'light');
+  document.getElementById('theme-icon').className='ti '+(dark?'ti-sun':'ti-moon');
 }}
-
-
-function toggleTheme(){{
-
-  isDark = !isDark;
-
-  localStorage.setItem(
-    'rvg-pub-theme',
-    isDark ? 'dark' : 'light'
-  );
-
-  applyTheme(isDark);
-
-}}
-
-
+function toggleTheme(){{isDark=!isDark;localStorage.setItem('x4g-pub-theme',isDark?'dark':'light');applyTheme(isDark)}}
 applyTheme(isDark);
 
 
