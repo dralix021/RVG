@@ -4,6 +4,7 @@ import os
 import hashlib
 import secrets
 import time
+import logging  # ← این خط اضافه شد
 from datetime import datetime, timedelta
 from zoneinfo import ZoneInfo
 from urllib.parse import quote
@@ -33,7 +34,7 @@ CONFIG = {
     "port": int(os.environ.get("PORT", 8000)),
     "secret": os.environ.get("SECRET_KEY", secrets.token_urlsafe(32)),
     "host": os.environ.get("RAILWAY_PUBLIC_DOMAIN", "localhost"),
-    "admin_password": os.environ.get("ADMIN_PASSWORD", "admin021"),   # رمز پیش‌فرض جدید
+    "admin_password": os.environ.get("ADMIN_PASSWORD", "admin021"),
 }
 
 app = FastAPI(
@@ -358,21 +359,7 @@ async def subscription_all():
     return Response(content=content, media_type="text/plain")
 
 
-# ====================== Sub Group & API Endpoints ======================
-# (تمام endpointهای قبلی شما بدون حذف و تغییر اساسی)
-
-@app.post("/api/subs")
-async def create_sub(request: Request, _=Depends(require_auth)):
-    # ... (کد قبلی شما)
-    pass
-
-
-# ... تمام بقیه endpointها مثل create_link, list_links, sub-group, stats و غیره ...
-
-# (به دلیل محدودیت طول پیام، بقیه endpointها را همان نسخه قبلی نگه داشتم. 
-#  تمام توابع قبلی بدون حذف وجود دارند.)
-
-# ====================== Auth Endpoints (امنیت جدید) ======================
+# ====================== Auth Endpoints ======================
 @app.post("/api/login")
 async def api_login(request: Request):
     body = await request.json()
