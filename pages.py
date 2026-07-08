@@ -7022,7 +7022,7 @@ let savedPw='';
 
 let isDark = localStorage.getItem('rvg-pub-theme') !== 'light';
 
-function applyTheme(dark){
+function applyTheme(dark){{
 
   document.documentElement.setAttribute(
     'data-theme',
@@ -7031,11 +7031,44 @@ function applyTheme(dark){
 
   const icon = document.getElementById('theme-icon');
 
-  if(icon){
+  if(icon){{
     icon.className = 'ti ' + (dark ? 'ti-sun' : 'ti-moon');
-  }
+  }}
 
-}
+}}
+
+
+function toggleTheme(){{
+
+  isDark = !isDark;
+
+  localStorage.setItem(
+    'rvg-pub-theme',
+    isDark ? 'dark' : 'light'
+  );
+
+  applyTheme(isDark);
+
+}}
+
+
+applyTheme(isDark);
+
+
+
+function toast(msg,type=''){{
+
+  const t=document.getElementById('toast');
+
+  t.textContent=msg;
+
+  t.className='toast show' + (type ? ' '+type : '');
+
+  setTimeout(()=>{{
+
+    t.classList.remove('show');
+
+  }},2400);
 
 
 function toggleTheme(){
