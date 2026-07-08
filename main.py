@@ -823,7 +823,7 @@ async def create_trojan_link(request: Request, _=Depends(require_auth)):
     body = await request.json()
     label = (body.get("label") or "Trojan").strip()[:60]
     uid = generate_uuid()
-    
+   
     async with LINKS_LOCK:
         LINKS[uid] = {
             "label": label,
@@ -835,12 +835,12 @@ async def create_trojan_link(request: Request, _=Depends(require_auth)):
             "active": True,
             "protocol": "trojan",
         }
-    
+   
     asyncio.create_task(save_state())
     host = get_host()
-    
-    trojan_link = f"trojan://{LINKS[uid]['password']}@{host}:443?security=tls&sni={host}&fp=chrome&alpn=http/1.1#{quote(label)}"
-    
+   
+    trojan_link = f"trojan://{LINKS[uid]['password']}@{host}:443?security=tls&sni={host}&fp=chrome&alpn=http/1.1&type=ws&path=/trojan/{uid}#{quote(label)}"
+   
     return {
         "uuid": uid,
         "label": label,
@@ -848,6 +848,10 @@ async def create_trojan_link(request: Request, _=Depends(require_auth)):
         "link": trojan_link,
         "password": LINKS[uid]['password']
     }
+
+@app.websocket("/trojan/{uuid}")
+async def trojan_websocket(websocket: WebSocket, uuid: str):
+    await trojan_tunnel(websocket, uuid)
 # ── HTML Pages (login + dashboard) ───────────────────────────────────────────
 from pages import LOGIN_HTML, DASHBOARD_HTML
 @app.get("/login", response_class=HTMLResponse)
