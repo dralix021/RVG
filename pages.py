@@ -475,6 +475,7 @@ id="kq482"
 
 
 
+
 </style>
 
 </head>
@@ -486,71 +487,31 @@ id="kq482"
 <div class="page">
 
 
+<div class="blur"></div>
+
 <div class="wave"></div>
 
 <div class="wave two"></div>
 
-
-
-<div class="login-card">
-
-
-
-<div class="logo">
-
-<img src="https://yt3.googleusercontent.com/vA6bYj1V386YmibpWRNFJtsRRqwfY_U9wnb7gmW90eRVXyNB7gAfjj1XPs5UX0cdKdQprrI=s160-c-k-c0x00ffffff-no-rj">
-
-</div>
+<div class="wave three"></div>
 
 
 
-<div class="title">
+<div class="wrap">
+
+
+<div class="card">
+
+
+<h2 class="title">
 
 خوش آمدید
 
-</div>
-
-
-<div class="subtitle">
-
-DrPhp-Xui
-
-</div>
-
-
-<div class="brand">
-
-SpareVpn Gateway
-
-</div>
+</h2>
 
 
 
-<div class="error" id="error">
-
-<span id="error-text"></span>
-
-</div>
-
-
-
-<div class="default-box">
-
-<div>
-
-اطلاعات پیش فرض
-
-</div>
-
-
-<span onclick="fillDefault()">
-
-AdminRoot / Admin021
-
-</span>
-
-
-</div>
+<form id="form">
 
 
 
@@ -560,20 +521,24 @@ AdminRoot / Admin021
 <div class="input-box">
 
 
+<div class="input-icon">
+
 <i class="ti ti-user"></i>
+
+</div>
 
 
 <input
 
-id="username"
-
 type="text"
+
+id="username"
 
 placeholder="نام کاربری"
 
-value="AdminRoot"
-
 autocomplete="username"
+
+autofocus
 
 >
 
@@ -593,18 +558,21 @@ autocomplete="username"
 <div class="input-box">
 
 
+<div class="input-icon">
+
 <i class="ti ti-lock"></i>
+
+</div>
+
 
 
 <input
 
-id="password"
-
 type="password"
 
-placeholder="رمزعبور"
+id="pw"
 
-value="Admin021"
+placeholder="رمزعبور"
 
 autocomplete="current-password"
 
@@ -612,7 +580,11 @@ autocomplete="current-password"
 
 
 
-<i class="ti ti-eye eye" id="eye"></i>
+<div class="eye" onclick="showPass()">
+
+<i class="ti ti-eye" id="eye"></i>
+
+</div>
 
 
 </div>
@@ -623,11 +595,19 @@ autocomplete="current-password"
 
 
 
+<div class="error" id="err">
 
-<button class="btn" id="login-btn">
+<span id="err-text"></span>
+
+</div>
 
 
-<i class="ti ti-login"></i>
+
+
+<button class="btn" id="btn" type="submit">
+
+
+<i class="ti ti-login-2"></i>
 
 ورود
 
@@ -636,53 +616,52 @@ autocomplete="current-password"
 
 
 
-<div class="options">
+</form>
 
 
-<button class="theme" id="theme-btn">
+
+
+<div class="lang-box">
 
 <i class="ti ti-bulb"></i>
 
-</button>
 
-
-
-<select class="lang" id="lang">
-
-<option value="fa">
+<div class="lang">
 
 🇮🇷 فارسی
 
-</option>
-
-<option value="en">
-
-🇺🇸 English
-
-</option>
-
-</select>
+</div>
 
 
 </div>
 
 
 
-<div class="footer">
+
+
+<div class="card-footer">
+
 
 کانال رسمی
 
-<a href="https://t.me/SpareVpn">
+
+<a href="https://t.me/SpareVpn" target="_blank">
+
 
 <i class="ti ti-brand-telegram"></i>
 
 @SpareVpn
+
 
 </a>
 
 
 </div>
 
+
+
+
+</div>
 
 
 </div>
