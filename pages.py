@@ -7045,7 +7045,7 @@ function toast(msg,type=''){{
   }},2400);
 
 
-function toggleTheme(){
+function toggleTheme(){{
 
   isDark = !isDark;
 
@@ -7056,14 +7056,14 @@ function toggleTheme(){
 
   applyTheme(isDark);
 
-}
+}}
 
 
 applyTheme(isDark);
 
 
 
-function toast(msg,type=''){
+function toast(msg,type=''){{
 
   const t=document.getElementById('toast');
 
@@ -7071,11 +7071,13 @@ function toast(msg,type=''){
 
   t.className='toast show' + (type ? ' '+type : '');
 
-  setTimeout(()=>{
-    t.classList.remove('show');
-  },2400);
+  setTimeout(()=>{{
 
-}
+    t.classList.remove('show');
+
+  }},2400);
+
+}}
 function esc(s){{return String(s||'').replace(/[&<>"']/g,c=>({{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}}[c]))}}
 function fmtB(b){{if(!b||b===0)return '0 B';if(b<1024)return b+' B';if(b<1024**2)return (b/1024).toFixed(1)+' KB';if(b<1024**3)return (b/1024**2).toFixed(2)+' MB';return (b/1024**3).toFixed(2)+' GB'}}
 function toFa(n){{return String(n).replace(/\\d/g,d=>'۰۱۲۳۴۵۶۷۸۹'[d])}}
