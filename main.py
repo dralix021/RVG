@@ -4,7 +4,7 @@ import os
 import hashlib
 import secrets
 import time
-import logging  # ← این خط اضافه شد
+import logging
 from datetime import datetime, timedelta
 from zoneinfo import ZoneInfo
 from urllib.parse import quote
@@ -30,12 +30,20 @@ logger = logging.getLogger("RVG-Gateway")
 # ====================== Config ======================
 IRAN_TZ = ZoneInfo("Asia/Tehran")
 
-app = FastAPI(title="RVG Gateway - DrPhp", docs_url=None, redoc_url=None)
 CONFIG = {
-    "port": int(os.environ.get("PORT", 8000)),
-    "secret": os.environ.get("SECRET_KEY", secrets.token_urlsafe(32)),
-    "host": os.environ.get("RAILWAY_PUBLIC_DOMAIN", "localhost"),
+    "port": int(os.environ.get("PORT", 8000)),
+    "secret": os.environ.get("SECRET_KEY", secrets.token_urlsafe(32)),
+    "host": os.environ.get("RAILWAY_PUBLIC_DOMAIN", "localhost"),
+    "admin_password": os.environ.get("ADMIN_PASSWORD", "admin021"),
 }
+
+app = FastAPI(
+    title="RVG Gateway",
+    version="10.2",
+    docs_url=None,
+    redoc_url=None,
+    openapi_url=None
+)
 
 app.add_middleware(
     CORSMiddleware,
@@ -297,9 +305,7 @@ async def root():
         "service": "RVG Gateway",
         "version": app.version,
         "status": "active",
-        "channel": "https://t.me/SpareVpn",
-        "docs": "Protected",
-        "ping": "/ping"
+        "channel": "https://t.me/SpareVpn"
     }
 
 
@@ -323,42 +329,7 @@ async def ping():
     }
 
 
-# ====================== Subscription Endpoints ======================
-@app.get("/sub/{uuid}")
-async def subscription_single(uuid: str):
-    import base64
-    async with LINKS_LOCK:
-        link = LINKS.get(uuid)
-
-    if not link or not is_link_allowed(link):
-        raise HTTPException(status_code=404, detail="not found or inactive")
-
-    host = get_host()
-    proto = link.get("protocol", DEFAULT_PROTOCOL)
-    vless = generate_vless_link(uuid, host, f"RVG-{link['label']}", proto)
-
-    content = base64.b64encode(vless.encode()).decode()
-    return Response(
-        content=content,
-        media_type="text/plain",
-        headers={"profile-title": quote(link["label"]), "support-url": "https://t.me/SpareVpn"}
-    )
-
-
-@app.get("/sub-all", dependencies=[Depends(require_auth)])
-async def subscription_all():
-    import base64
-    host = get_host()
-    async with LINKS_LOCK:
-        lines = [
-            generate_vless_link(uid, host, f"RVG-{d['label']}", d.get("protocol", DEFAULT_PROTOCOL))
-            for uid, d in LINKS.items() if is_link_allowed(d)
-        ]
-    content = base64.b64encode("\n".join(lines).encode()).decode()
-    return Response(content=content, media_type="text/plain")
-
-
-# ====================== Auth Endpoints ======================
+# ====================== Auth & Pages ======================
 @app.post("/api/login")
 async def api_login(request: Request):
     body = await request.json()
@@ -375,15 +346,6 @@ async def api_login(request: Request):
     return resp
 
 
-@app.post("/api/logout")
-async def api_logout(request: Request):
-    await destroy_session(request.cookies.get(SESSION_COOKIE))
-    resp = JSONResponse({"ok": True})
-    resp.delete_cookie(SESSION_COOKIE, path="/")
-    return resp
-
-
-# ====================== HTML Pages ======================
 from pages import LOGIN_HTML, DASHBOARD_HTML
 
 
@@ -407,10 +369,9 @@ async def old_login_redirect():
     return RedirectResponse(url="/admin-login")
 
 
-# ====================== Import External Modules ======================
+# ====================== External Modules ======================
 from relay_vless import websocket_tunnel
 from xhttp_siz10 import router as xhttp_router
-from pages import get_public_page_html
 
 app.add_api_websocket_route("/ws/{uuid}", websocket_tunnel)
 app.include_router(xhttp_router)
