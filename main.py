@@ -157,10 +157,23 @@ def generate_uuid() -> str:
    
 def now_ir() -> datetime:
     return datetime.now(IRAN_TZ)
+
 def generate_vless_link(uuid: str, host: str, remark: str = "RVG", protocol: str = DEFAULT_PROTOCOL) -> str:
     """می‌سازد VLESS share-link متناسب با پروتکل انتخاب‌شده (WS کلاسیک یا یکی از مدهای XHTTP)."""
     if protocol == "vless-ws":
         path = f"/ws/{uuid}"
+        params = {
+            "encryption": "none",
+            "security": "tls",
+            "type": "ws",
+            "host": host,
+            "path": path,
+            "sni": host,
+            "fp": "chrome",
+            "alpn": "http/1.1",
+        }
+    elif protocol == "railway":   # ← اضافه شد
+        path = f"/{uuid}"         # یا /ws/{uuid} بسته به کانفیگ Railway
         params = {
             "encryption": "none",
             "security": "tls",
@@ -188,16 +201,22 @@ def generate_vless_link(uuid: str, host: str, remark: str = "RVG", protocol: str
         }
     query = "&".join(f"{k}={quote(str(v))}" for k, v in params.items())
     return f"vless://{uuid}@{host}:443?{query}#{quote(remark)}"
+
+
 def uptime() -> str:
     secs = int(time.time() - stats["start_time"])
     h, m, s = secs // 3600, (secs % 3600) // 60, secs % 60
     return f"{h:02d}:{m:02d}:{s:02d}"
+
+
 def parse_size_to_bytes(value: float, unit: str) -> int:
     unit = unit.upper()
     if unit == "GB": return int(value * 1024 ** 3)
     if unit == "MB": return int(value * 1024 ** 2)
     if unit == "KB": return int(value * 1024)
     return int(value)
+
+
 def is_link_expired(link: dict) -> bool:
     exp = link.get("expires_at")
     if not exp:
@@ -206,6 +225,8 @@ def is_link_expired(link: dict) -> bool:
         return datetime.now() > datetime.fromisoformat(exp)
     except Exception:
         return False
+
+
 def is_link_allowed(link: dict | None) -> bool:
     if link is None:
         return False
@@ -217,11 +238,15 @@ def is_link_allowed(link: dict | None) -> bool:
     if lb > 0 and link.get("used_bytes", 0) >= lb:
         return False
     return True
+
+
 def fmt_bytes(b: int) -> str:
     if b < 1024: return f"{b} B"
     if b < 1024**2: return f"{b/1024:.1f} KB"
     if b < 1024**3: return f"{b/1024**2:.2f} MB"
     return f"{b/1024**3:.2f} GB"
+
+
 def client_ip(request: Request) -> str:
     """آی‌پی واقعی کلاینت رو با احتساب هدرهای پراکسی (Railway/Cloudflare) برمی‌گردونه."""
     fwd = request.headers.get("x-forwarded-for")
@@ -233,27 +258,15 @@ def client_ip(request: Request) -> str:
     return request.client.host if request.client else "نامشخص"
 # ── Default link ──────────────────────────────────────────────────────────────
 _default_link_created = False
-
 async def ensure_default_link():
     global _default_link_created
-
     if _default_link_created:
         return
-
     async with LINKS_LOCK:
         if not any(l.get("is_default") for l in LINKS.values()):
-
-            uid = hashlib.sha256(
-                f"default{CONFIG['secret']}".encode()
-            ).hexdigest()
-
-            uid = (
-                f"{uid[:8]}-{uid[8:12]}-{uid[12:16]}-"
-                f"{uid[16:20]}-{uid[20:32]}"
-            )
-
+            uid = hashlib.sha256(f"default{CONFIG['secret']}".encode()).hexdigest()
+            uid = f"{uid[:8]}-{uid[8:12]}-{uid[12:16]}-{uid[16:20]}-{uid[20:32]}"
             if uid not in LINKS:
-
                 LINKS[uid] = {
                     "label": "لینک پیش‌فرض",
                     "limit_bytes": 0,
@@ -265,31 +278,13 @@ async def ensure_default_link():
                     "is_default": True,
                     "sub_id": None,
                     "protocol": DEFAULT_PROTOCOL,
-
-                    # چند لینک برای یک کانفیگ
-                    "links": [
-                        {
-                            "name": "Default Link 1",
-                            "protocol": "ws"
-                        },
-                        {
-                            "name": "Default Link 2",
-                            "protocol": "ws"
-                        },
-                        {
-                            "name": "Default Link 3",
-                            "protocol": "ws"
-                        }
-                    ]
                 }
-
                 asyncio.create_task(save_state())
-
         _default_link_created = True
 # ── Basic endpoints ───────────────────────────────────────────────────────────
 @app.get("/")
 async def root():
-    return {"service": "RVG Gateway", "version": "10.01", "status": "active", "channel": "https://t.me/SpareVpn"}
+    return {"service": "RVG Gateway", "version": "10.2", "status": "active", "channel": "https://t.me/SpareVpn"}
 @app.get("/health")
 async def health():
     return {"status": "ok", "connections": len(connections), "uptime": uptime()}
@@ -645,7 +640,6 @@ async def create_link(request: Request, _=Depends(require_auth)):
         protocol = DEFAULT_PROTOCOL
     uid = generate_uuid()
     async with LINKS_LOCK:
-    async with LINKS_LOCK:
         LINKS[uid] = {
             "label": label,
             "limit_bytes": limit_bytes,
@@ -657,28 +651,23 @@ async def create_link(request: Request, _=Depends(require_auth)):
             "is_default": False,
             "sub_id": sub_id,
             "protocol": protocol,
-
-            "links": []
         }
-
-        host = get_host()
-
-        # تولید چند خروجی برای یک کانفیگ
-        for item in [
-            {"name": "Default", "protocol": protocol},
-            {"name": "Backup", "protocol": protocol},
-            {"name": "Mobile", "protocol": protocol},
-        ]:
-            LINKS[uid]["links"].append({
-                "name": item["name"],
-                "protocol": item["protocol"],
-                "url": generate_vless_link(
-                    uid,
-                    host,
-                    remark=f"RVG-{label}-{item['name']}",
-                    protocol=item["protocol"]
-                )
-            })
+    if sub_id:
+        async with SUBS_LOCK:
+            if sub_id in SUBS:
+                ids = SUBS[sub_id].setdefault("link_ids", [])
+                if uid not in ids:
+                    ids.append(uid)
+    asyncio.create_task(save_state())
+    log_activity("link", f"کانفیگ «{label}» ساخته شد", "ok")
+    host = get_host()
+    return {
+        "uuid": uid,
+        **LINKS[uid],
+        "expired": False,
+        "vless_link": generate_vless_link(uid, host, remark=f"RVG-{label}", protocol=protocol),
+        "sub_url": f"https://{host}/sub/{uid}",
+    }
 @app.get("/api/links")
 async def list_links(_=Depends(require_auth)):
     host = get_host()
