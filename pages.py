@@ -7921,10 +7921,55 @@ function setExpiry(days,el){
   document.querySelectorAll('#exp-chips .chip').forEach(c=>c.classList.remove('active'));
   el.classList.add('active');
 }
-function selectProto(val,el){
-  document.getElementById('nl-proto').value = val;
-  document.querySelectorAll('.proto-card').forEach(c=>c.classList.remove('active'));
-  el.classList.add('active');
+// تابع انتخاب پروتکل (کد فعلی شما + بهبود)
+function selectProto(val, el) {
+    document.getElementById('nl-proto').value = val;
+    
+    document.querySelectorAll('.proto-card').forEach(c => {
+        c.classList.remove('active');
+    });
+    
+    el.classList.add('active');
+}
+
+// تابع ساخت لینک جدید (این بخش خیلی مهمه)
+async function createNewLink() {
+    const remark = document.getElementById('nl-remark')?.value.trim() || "RVG";
+    const limit = document.getElementById('nl-limit')?.value || 0;
+    const protocol = document.getElementById('nl-proto').value;   // ← این خط کلیدی است
+
+    if (!protocol) {
+        alert("لطفاً یک پروتکل انتخاب کنید");
+        return;
+    }
+
+    const payload = {
+        remark: remark,
+        protocol: protocol,          // ارسال پروتکل انتخابی به بک‌اند
+        limit_bytes: parseInt(limit) * 1024 * 1024 * 1024 || 0, // مثلاً GB به بایت
+        // سایر فیلدها مثل active: true و ...
+    };
+
+    try {
+        const res = await fetch('/api/links', {   // یا آدرس دقیق API شما
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+
+        const data = await res.json();
+        
+        if (data.ok || data.success) {
+            alert("لینک با موفقیت ساخته شد!");
+            loadLinks();        // لیست رو رفرش کن
+            closeSb();          // سایدبار رو ببند
+        } else {
+            alert("خطا: " + (data.error || "مشکلی پیش آمد"));
+        }
+    } catch (e) {
+        console.error(e);
+        alert("خطا در ارتباط با سرور");
+    }
 }
 const sb=document.getElementById('sb'),overlay=document.getElementById('overlay');
 function openSb(){sb.classList.add('open');overlay.classList.add('show')}
