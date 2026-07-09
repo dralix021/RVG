@@ -704,81 +704,63 @@ async def get_connections(_=Depends(require_auth)):
     }
 # ── Link Management ───────────────────────────────────────────────────────────
 @app.post("/api/links")
-def get_default_sni() -> str:
-    return "www.speedtest.net"   # می‌تونی بعداً رندوم کنی
+async def create_link(request: Request, _=Depends(require_auth)):
+    body = await request.json()
+    label = (body.get("label") or "لینک جدید").strip()[:60]
+    lv = float(body.get("limit_value") or 0)
+    lu = body.get("limit_unit") or "GB"
+    limit_bytes = 0 if lv <= 0 else parse_size_to_bytes(lv, lu)
+    exp_days = int(body.get("expires_days") or 0)
+    expires_at = (datetime.now() + timedelta(days=exp_days)).isoformat() if exp_days > 0 else None
+    note = (body.get("note") or "").strip()[:200]
+    sub_id = body.get("sub_id") or None
+    protocol = body.get("protocol") or DEFAULT_PROTOCOL
+    custom_sni = body.get("sni") or None   # ← اضافه شد
 
-def generate_vless_link(uuid: str, host: str, remark: str = "RVG", 
-                       protocol: str = DEFAULT_PROTOCOL, custom_sni: str = None) -> str:
-    """تولید لینک VLESS حرفه‌ای با SNI"""
-    
-    sni = custom_sni.strip() if custom_sni and custom_sni.strip() else get_default_sni()
+    if protocol not in PROTOCOLS:
+        protocol = DEFAULT_PROTOCOL
 
-    if protocol in ["railway", "railway-ws", "vless-ws"]:
-        path = f"/ws/{uuid}"
-        params = {
-            "encryption": "none",
-            "security": "tls",
-            "type": "ws",
-            "host": host,
-            "path": path,
-            "sni": sni,
-            "fp": "chrome",
-            "alpn": "http/1.1",
-        }
+    uid = generate_uuid()
     
-    elif protocol.startswith("xhttp-"):
-        mode = protocol.replace("xhttp-", "") or "stream-up"
-        path = f"/xhttp-siz10/{mode}/{uuid}"
-        params = {
-            "encryption": "none",
-            "security": "tls",
-            "type": "xhttp",
-            "mode": mode,
-            "host": host,
-            "path": path,
-            "sni": sni,
-            "fp": "chrome",
-            "alpn": "h2,http/1.1",
+    async with LINKS_LOCK:
+        LINKS[uid] = {
+            "label": label,
+            "limit_bytes": limit_bytes,
+            "used_bytes": 0,
+            "created_at": datetime.now().isoformat(),
+            "active": True,
+            "expires_at": expires_at,
+            "note": note,
+            "is_default": False,
+            "sub_id": sub_id,
+            "protocol": protocol,
         }
+
+    if sub_id:
+        async with SUBS_LOCK:
+            if sub_id in SUBS:
+                ids = SUBS[sub_id].setdefault("link_ids", [])
+                if uid not in ids:
+                    ids.append(uid)
+
+    asyncio.create_task(save_state())
+    log_activity("link", f"کانفیگ «{label}» ساخته شد", "ok")
     
-    elif protocol == "reality":
-        params = {
-            "encryption": "none",
-            "security": "reality",
-            "type": "tcp",
-            "pbk": "Dr_Php_pxbel_reality",   # ← عوض کن
-            "fp": "chrome",
-            "sni": sni,
-            "sid": "0123456789abcdef",
-            "flow": "xtls-rprx-vision",
-        }
+    host = get_host()
     
-    elif protocol == "raw":
-        params = {
-            "encryption": "none",
-            "security": "tls",
-            "type": "tcp",
-            "host": host,
-            "sni": sni,
-            "fp": "chrome",
-            "alpn": "http/1.1",
-        }
-    
-    else:
-        path = f"/ws/{uuid}"
-        params = {
-            "encryption": "none",
-            "security": "tls",
-            "type": "ws",
-            "host": host,
-            "path": path,
-            "sni": sni,
-            "fp": "chrome",
-            "alpn": "http/1.1",
-        }
-    
-    query = "&".join(f"{k}={quote(str(v))}" for k, v in params.items())
-    return f"vless://{uuid}@{host}:443?{query}#{quote(remark)}"
+    return {
+        "uuid": uid,
+        **LINKS[uid],
+        "expired": False,
+        "vless_link": generate_vless_link(
+            uid, 
+            host, 
+            remark=f"RVG-{label}", 
+            protocol=protocol, 
+            custom_sni=custom_sni
+        ),
+        "sub_url": f"https://{host}/sub/{uid}",
+    }
 @app.get("/api/links")
 async def list_links(_=Depends(require_auth)):
     host = get_host()
