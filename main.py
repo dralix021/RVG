@@ -84,8 +84,26 @@ LINKS_LOCK = asyncio.Lock()
 SUBS: dict = {}
 SUBS_LOCK = asyncio.Lock()
 # پروتکل‌های پشتیبانی‌شده برای هر کانفیگ
-PROTOCOLS = ("vless-ws", "xhttp-packet-up", "xhttp-stream-up", "xhttp-stream-one")
+# ── تنظیمات پروتکل‌ها ─────────────────────────────────────
 DEFAULT_PROTOCOL = "vless-ws"
+
+PROTOCOLS = {
+    "vless-ws", 
+    "railway", 
+    "railway-ws",
+    "xhttp-packet-up", 
+    "xhttp-stream-up", 
+    "xhttp-stream-one",
+    "grpc", 
+    "vless-grpc",
+    "vmess", 
+    "vmess-ws",
+    "shadowsocks", 
+    "ss",
+    "hysteria2", 
+    "hy2", 
+    "hysteria"
+}
 def log_activity(kind: str, message: str, level: str = "info"):
     """ثبت یک رخداد در لاگ فعالیت‌ها (ساخت/حذف/ویرایش کانفیگ، ورود، و...)."""
     activity_logs.append({
@@ -708,10 +726,15 @@ async def create_link(request: Request, _=Depends(require_auth)):
     expires_at = (datetime.now() + timedelta(days=exp_days)).isoformat() if exp_days > 0 else None
     note = (body.get("note") or "").strip()[:200]
     sub_id = body.get("sub_id") or None
+    
     protocol = body.get("protocol") or DEFAULT_PROTOCOL
+    
+    # مهم: چک لیست رو گسترده‌تر کردیم
     if protocol not in PROTOCOLS:
         protocol = DEFAULT_PROTOCOL
+
     uid = generate_uuid()
+    
     async with LINKS_LOCK:
         LINKS[uid] = {
             "label": label,
@@ -723,17 +746,21 @@ async def create_link(request: Request, _=Depends(require_auth)):
             "note": note,
             "is_default": False,
             "sub_id": sub_id,
-            "protocol": protocol,
+            "protocol": protocol,          # ذخیره پروتکل
         }
+
     if sub_id:
         async with SUBS_LOCK:
             if sub_id in SUBS:
                 ids = SUBS[sub_id].setdefault("link_ids", [])
                 if uid not in ids:
                     ids.append(uid)
+
     asyncio.create_task(save_state())
     log_activity("link", f"کانفیگ «{label}» ساخته شد", "ok")
+    
     host = get_host()
+    
     return {
         "uuid": uid,
         **LINKS[uid],
