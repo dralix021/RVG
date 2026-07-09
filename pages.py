@@ -7557,95 +7557,34 @@ top:17px
           <span class="chip" onclick="setQuota(50,'GB',this)">۵۰ GB</span>
         </div>
       </div>
-      <<div class="cp-block mb16">
-
-    <div class="cp-block-label"><i class="ti ti-plug-connected"></i> پروتکل انتقال</div>
-
-    <select id="nl-proto" style="display:none">
-
-        <option value="vless-ws">VLESS / WebSocket</option>
-
-        <option value="railway">Railway Optimized</option>
-
-        <option value="xhttp-packet-up">XHTTP · packet-up</option>
-
-        <option value="xhttp-stream-up">XHTTP · stream-up</option>
-
-        <option value="xhttp-stream-one">XHTTP · stream-one</option>
-
-    </select>
-
-    <div class="proto-cards">
-
-        <div class="proto-card active" data-val="vless-ws" onclick="selectProto('vless-ws',this)">
-
+      <div class="cp-block mb16">
+        <div class="cp-block-label"><i class="ti ti-plug-connected"></i> پروتکل انتقال</div>
+        <select id="nl-proto" style="display:none">
+          <option value="vless-ws">VLESS / WebSocket</option>
+          <option value="xhttp-packet-up">XHTTP Ultra · packet-up</option>
+          <option value="xhttp-stream-up">XHTTP Ultra · stream-up</option>
+        </select>
+        <div class="proto-cards">
+          <div class="proto-card active" data-val="vless-ws" onclick="selectProto('vless-ws',this)">
             <div class="proto-card-check"><i class="ti ti-check"></i></div>
-
             <div class="proto-card-icon"><i class="ti ti-link"></i></div>
-
             <div class="proto-card-title">VLESS / WS</div>
-
-            <div class="proto-card-desc">تمامی نت ها پایدار</div>
-
-        </div>
-
-        
-
-        <div class="proto-card" data-val="railway" onclick="selectProto('railway',this)">
-
+            <div class="proto-card-desc">پایدار و همه‌منظوره</div>
+          </div>
+          <div class="proto-card" data-val="xhttp-packet-up" onclick="selectProto('xhttp-packet-up',this)">
             <div class="proto-card-check"><i class="ti ti-check"></i></div>
-
-            <div class="proto-card-icon"><i class="ti ti-train"></i></div>
-
-            <div class="proto-card-title">Railway Optimized</div>
-
-            <div class="proto-card-desc">بهینه و حرفه‌ای</div>
-
-        </div>
-
-        <div class="proto-card" data-val="xhttp-packet-up" onclick="selectProto('xhttp-packet-up',this)">
-
-            <div class="proto-card-check"><i class="ti ti-check"></i></div>
-
             <div class="proto-card-icon"><i class="ti ti-bolt"></i></div>
-
-            <div class="proto-card-title">XHTTP packet-up</div>
-
-            <div class="proto-card-desc">سازگار با CDN ها</div>
-
-        </div>
-
-        
-
-        <div class="proto-card" data-val="xhttp-stream-up" onclick="selectProto('xhttp-stream-up',this)">
-
+            <div class="proto-card-title">XHTTP · packet-up</div>
+            <div class="proto-card-desc">سازگار با CDN</div>
+          </div>
+          <div class="proto-card" data-val="xhttp-stream-up" onclick="selectProto('xhttp-stream-up',this)">
             <div class="proto-card-check"><i class="ti ti-check"></i></div>
-
             <div class="proto-card-icon"><i class="ti ti-rocket"></i></div>
-
-            <div class="proto-card-title">XHTTP stream-up</div>
-
-            <div class="proto-card-desc">تاخیر کم مخضوص گیم</div>
-
+            <div class="proto-card-title">XHTTP · stream-up</div>
+            <div class="proto-card-desc">تاخیر پایین‌تر</div>
+          </div>
         </div>
-
-        
-
-        <div class="proto-card" data-val="xhttp-stream-one" onclick="selectProto('xhttp-stream-one',this)">
-
-            <div class="proto-card-check"><i class="ti ti-check"></i></div>
-
-            <div class="proto-card-icon"><i class="ti ti-zap"></i></div>
-
-            <div class="proto-card-title">XHTTP stream-one</div>
-
-            <div class="proto-card-desc">حالت پیشرفته تمامی ویزگی ها</div>
-
-        </div>
-
-    </div>
-
-</div>
+      </div>
       <div class="cp-footer">
         <div class="cp-footer-note"><i class="ti ti-info-circle"></i> UUID کاملاً رندوم تولید می‌شود · فقط UUID‌های ثبت‌شده اجازه اتصال دارند · پروتکل پس از ساخت قابل تغییر نیست.</div>
         <button class="cp-submit-btn" onclick="createLink()"><i class="ti ti-link-plus"></i> ساخت کانفیگ</button>
@@ -8065,44 +8004,19 @@ async function loadLinks(){
   }catch(e){console.error(e)}
 }
 async function createLink(){
-    const label = document.getElementById('nl-label').value.trim() || 'کانفیگ جدید';
-    const val = document.getElementById('nl-val').value;
-    const unit = document.getElementById('nl-unit').value;
-    const exp = document.getElementById('nl-exp').value;
-    const note = document.getElementById('nl-note').value.trim();
-    const sub_id = document.getElementById('nl-sub').value || null;
-    
-    // پروتکل
-    const protocol = document.getElementById('nl-proto').value || 'vless-ws';
-
-    console.log("ارسال پروتکل:", protocol);
-
-    try{
-        const r = await authF('/api/links', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({
-                label,
-                limit_value: val || 0,
-                limit_unit: unit,
-                expires_days: exp || 0,
-                note,
-                sub_id,
-                protocol
-            })
-        });
-        if(!r.ok) throw new Error('failed');
-        ['nl-label','nl-val','nl-exp','nl-note'].forEach(id => {
-            const el = document.getElementById(id);
-            if(el) el.value = '';
-        });
-        toast('کانفیگ ساخته شد ✓', 'ok');
-        loadLinks();
-        closeSb();   // سایدبار رو ببند
-    } catch(e){
-        console.error(e);
-        toast('خطا در ساخت کانفیگ', 'err');
-    }
+  const label=document.getElementById('nl-label').value.trim()||'کانفیگ جدید';
+  const val=document.getElementById('nl-val').value;
+  const unit=document.getElementById('nl-unit').value;
+  const exp=document.getElementById('nl-exp').value;
+  const note=document.getElementById('nl-note').value.trim();
+  const sub_id=document.getElementById('nl-sub').value||null;
+  const protocol=document.getElementById('nl-proto').value||'vless-ws';
+  try{
+    const r=await authF('/api/links',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({label,limit_value:val||0,limit_unit:unit,expires_days:exp||0,note,sub_id,protocol})});
+    if(!r.ok)throw new Error('failed');
+    ['nl-label','nl-val','nl-exp','nl-note'].forEach(id=>document.getElementById(id).value='');
+    toast('کانفیگ ساخته شد ✓','ok');loadLinks();
+  }catch(e){toast('خطا در ساخت','err')}
 }
 function openEditLink(uuid){
   const l=allLinksList.find(x=>x.uuid===uuid);
