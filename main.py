@@ -84,14 +84,8 @@ LINKS_LOCK = asyncio.Lock()
 SUBS: dict = {}
 SUBS_LOCK = asyncio.Lock()
 # پروتکل‌های پشتیبانی‌شده برای هر کانفیگ
-# ── تنظیمات پروتکل‌ها ─────────────────────────────────────
+PROTOCOLS = ("vless-ws", "xhttp-packet-up", "xhttp-stream-up", "xhttp-stream-one")
 DEFAULT_PROTOCOL = "vless-ws"
-
-PROTOCOLS = {
-    "vless-ws", "railway", "railway-ws",
-    "xhttp-packet-up", "xhttp-stream-up", "xhttp-stream-one",
-    "reality", "raw"
-}
 def log_activity(kind: str, message: str, level: str = "info"):
     """ثبت یک رخداد در لاگ فعالیت‌ها (ساخت/حذف/ویرایش کانفیگ، ورود، و...)."""
     activity_logs.append({
@@ -163,12 +157,9 @@ def generate_uuid() -> str:
    
 def now_ir() -> datetime:
     return datetime.now(IRAN_TZ)
-
-
 def generate_vless_link(uuid: str, host: str, remark: str = "RVG", protocol: str = DEFAULT_PROTOCOL) -> str:
-    """تولید لینک اشتراک برای پروتکل‌های مختلف (VLESS, VMess, Shadowsocks, Hysteria2, gRPC و ...)"""
-    
-    if protocol == "vless-ws" or protocol == "railway-ws" or protocol == "railway":
+    """می‌سازد VLESS share-link متناسب با پروتکل انتخاب‌شده (WS کلاسیک یا یکی از مدهای XHTTP)."""
+    if protocol == "vless-ws":
         path = f"/ws/{uuid}"
         params = {
             "encryption": "none",
@@ -180,89 +171,9 @@ def generate_vless_link(uuid: str, host: str, remark: str = "RVG", protocol: str
             "fp": "chrome",
             "alpn": "http/1.1",
         }
-        prefix = f"vless://{uuid}@{host}:443"
-
-    elif protocol.startswith("xhttp-"):
-        mode = protocol.replace("xhttp-", "")
-        path = f"/xhttp-siz10/{mode}/{uuid}"
-        params = {
-            "encryption": "none",
-            "security": "tls",
-            "type": "xhttp",
-            "mode": mode,
-            "host": host,
-            "path": path,
-            "sni": host,
-            "fp": "chrome",
-            "alpn": "h2,http/1.1",
-        }
-        prefix = f"vless://{uuid}@{host}:443"
-
-    elif protocol == "grpc" or protocol == "vless-grpc":
-        path = f"/grpc/{uuid}"
-        params = {
-            "encryption": "none",
-            "security": "tls",
-            "type": "grpc",
-            "serviceName": "grpc",
-            "host": host,
-            "sni": host,
-            "fp": "chrome",
-            "alpn": "h2",
-        }
-        prefix = f"vless://{uuid}@{host}:443"
-
-    elif protocol == "vmess" or protocol == "vmess-ws":
-        path = f"/vmess/{uuid}"
-        params = {
-            "encryption": "none",
-            "security": "tls",
-            "type": "ws",
-            "host": host,
-            "path": path,
-            "sni": host,
-            "fp": "chrome",
-            "alpn": "http/1.1",
-        }
-        # VMess لینک base64 می‌خواهد (ساده‌سازی)
-        config = {
-            "v": "2",
-            "ps": remark,
-            "add": host,
-            "port": "443",
-            "id": uuid,
-            "aid": "0",
-            "net": "ws",
-            "type": "none",
-            "host": host,
-            "path": path,
-            "tls": "tls",
-            "sni": host,
-            "fp": "chrome"
-        }
-        import base64, json
-        return "vmess://" + base64.urlsafe_b64encode(json.dumps(config).encode()).decode().rstrip("=")
-
-    elif protocol in ["shadowsocks", "ss", "shadosocks"]:
-        # Shadowsocks 2022
-        method = "2022-blake3-aes-128-gcm"
-        password = uuid.replace("-", "")[:32]  # استفاده از uuid به عنوان پسورد
-        return f"ss://{method}:{password}@{host}:443#{quote(remark)}"
-
-    elif protocol in ["hysteria2", "hy2", "hysteria"]:
-        # Hysteria2
-        params = {
-            "security": "tls",
-            "sni": host,
-            "alpn": "h3",
-            "fp": "chrome"
-        }
-        query = "&".join(f"{k}={quote(str(v))}" for k, v in params.items())
-        return f"hysteria2://{uuid}@{host}:443?{query}#{quote(remark)}"
-
     else:
-        # پیش‌فرض: VLESS + XHTTP Stream (بهترین تعادل)
-        mode = "stream-up"
+        # xhttp-packet-up / xhttp-stream-up / xhttp-stream-one
+        mode = protocol.replace("xhttp-", "") # packet-up | stream-up | stream-one
         path = f"/xhttp-siz10/{mode}/{uuid}"
         params = {
             "encryption": "none",
@@ -275,27 +186,18 @@ def generate_vless_link(uuid: str, host: str, remark: str = "RVG", protocol: str
             "fp": "chrome",
             "alpn": "h2,http/1.1",
         }
-        prefix = f"vless://{uuid}@{host}:443"
-
-    # ساخت لینک برای VLESS و پروتکل‌های مشابه
     query = "&".join(f"{k}={quote(str(v))}" for k, v in params.items())
-    return f"{prefix}?{query}#{quote(remark)}"
-
-
+    return f"vless://{uuid}@{host}:443?{query}#{quote(remark)}"
 def uptime() -> str:
     secs = int(time.time() - stats["start_time"])
     h, m, s = secs // 3600, (secs % 3600) // 60, secs % 60
     return f"{h:02d}:{m:02d}:{s:02d}"
-
-
 def parse_size_to_bytes(value: float, unit: str) -> int:
     unit = unit.upper()
     if unit == "GB": return int(value * 1024 ** 3)
     if unit == "MB": return int(value * 1024 ** 2)
     if unit == "KB": return int(value * 1024)
     return int(value)
-
-
 def is_link_expired(link: dict) -> bool:
     exp = link.get("expires_at")
     if not exp:
@@ -304,8 +206,6 @@ def is_link_expired(link: dict) -> bool:
         return datetime.now() > datetime.fromisoformat(exp)
     except Exception:
         return False
-
-
 def is_link_allowed(link: dict | None) -> bool:
     if link is None:
         return False
@@ -317,15 +217,11 @@ def is_link_allowed(link: dict | None) -> bool:
     if lb > 0 and link.get("used_bytes", 0) >= lb:
         return False
     return True
-
-
 def fmt_bytes(b: int) -> str:
     if b < 1024: return f"{b} B"
     if b < 1024**2: return f"{b/1024:.1f} KB"
     if b < 1024**3: return f"{b/1024**2:.2f} MB"
     return f"{b/1024**3:.2f} GB"
-
-
 def client_ip(request: Request) -> str:
     """آی‌پی واقعی کلاینت رو با احتساب هدرهای پراکسی (Railway/Cloudflare) برمی‌گردونه."""
     fwd = request.headers.get("x-forwarded-for")
@@ -363,7 +259,7 @@ async def ensure_default_link():
 # ── Basic endpoints ───────────────────────────────────────────────────────────
 @app.get("/")
 async def root():
-    return {"service": "RVG Gateway", "version": "10.2", "status": "active", "channel": "https://t.me/SpareVpn"}
+    return {"service": "RVG Gateway", "version": "10.01", "status": "active", "channel": "https://t.me/SpareVpn"}
 @app.get("/health")
 async def health():
     return {"status": "ok", "connections": len(connections), "uptime": uptime()}
@@ -715,13 +611,9 @@ async def create_link(request: Request, _=Depends(require_auth)):
     note = (body.get("note") or "").strip()[:200]
     sub_id = body.get("sub_id") or None
     protocol = body.get("protocol") or DEFAULT_PROTOCOL
-    custom_sni = body.get("sni") or None   # ← اضافه شد
-
     if protocol not in PROTOCOLS:
         protocol = DEFAULT_PROTOCOL
-
     uid = generate_uuid()
-    
     async with LINKS_LOCK:
         LINKS[uid] = {
             "label": label,
@@ -735,30 +627,20 @@ async def create_link(request: Request, _=Depends(require_auth)):
             "sub_id": sub_id,
             "protocol": protocol,
         }
-
     if sub_id:
         async with SUBS_LOCK:
             if sub_id in SUBS:
                 ids = SUBS[sub_id].setdefault("link_ids", [])
                 if uid not in ids:
                     ids.append(uid)
-
     asyncio.create_task(save_state())
     log_activity("link", f"کانفیگ «{label}» ساخته شد", "ok")
-    
     host = get_host()
-    
     return {
         "uuid": uid,
         **LINKS[uid],
         "expired": False,
-        "vless_link": generate_vless_link(
-            uid, 
-            host, 
-            remark=f"RVG-{label}", 
-            protocol=protocol, 
-            custom_sni=custom_sni
-        ),
+        "vless_link": generate_vless_link(uid, host, remark=f"RVG-{label}", protocol=protocol),
         "sub_url": f"https://{host}/sub/{uid}",
     }
 @app.get("/api/links")
