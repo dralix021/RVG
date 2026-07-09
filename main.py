@@ -158,9 +158,11 @@ def generate_uuid() -> str:
 def now_ir() -> datetime:
     return datetime.now(IRAN_TZ)
 
+
 def generate_vless_link(uuid: str, host: str, remark: str = "RVG", protocol: str = DEFAULT_PROTOCOL) -> str:
-    """می‌سازد VLESS share-link متناسب با پروتکل انتخاب‌شده (WS کلاسیک یا یکی از مدهای XHTTP)."""
-    if protocol == "vless-ws":
+    """تولید لینک اشتراک برای پروتکل‌های مختلف (VLESS, VMess, Shadowsocks, Hysteria2, gRPC و ...)"""
+    
+    if protocol == "vless-ws" or protocol == "railway-ws" or protocol == "railway":
         path = f"/ws/{uuid}"
         params = {
             "encryption": "none",
@@ -172,21 +174,10 @@ def generate_vless_link(uuid: str, host: str, remark: str = "RVG", protocol: str
             "fp": "chrome",
             "alpn": "http/1.1",
         }
-    elif protocol == "railway":   # ← اضافه شد
-        path = f"/{uuid}"         # یا /ws/{uuid} بسته به کانفیگ Railway
-        params = {
-            "encryption": "none",
-            "security": "tls",
-            "type": "ws",
-            "host": host,
-            "path": path,
-            "sni": host,
-            "fp": "chrome",
-            "alpn": "http/1.1",
-        }
-    else:
-        # xhttp-packet-up / xhttp-stream-up / xhttp-stream-one
-        mode = protocol.replace("xhttp-", "") # packet-up | stream-up | stream-one
+        prefix = f"vless://{uuid}@{host}:443"
+
+    elif protocol.startswith("xhttp-"):
+        mode = protocol.replace("xhttp-", "")
         path = f"/xhttp-siz10/{mode}/{uuid}"
         params = {
             "encryption": "none",
@@ -199,8 +190,90 @@ def generate_vless_link(uuid: str, host: str, remark: str = "RVG", protocol: str
             "fp": "chrome",
             "alpn": "h2,http/1.1",
         }
+        prefix = f"vless://{uuid}@{host}:443"
+
+    elif protocol == "grpc" or protocol == "vless-grpc":
+        path = f"/grpc/{uuid}"
+        params = {
+            "encryption": "none",
+            "security": "tls",
+            "type": "grpc",
+            "serviceName": "grpc",
+            "host": host,
+            "sni": host,
+            "fp": "chrome",
+            "alpn": "h2",
+        }
+        prefix = f"vless://{uuid}@{host}:443"
+
+    elif protocol == "vmess" or protocol == "vmess-ws":
+        path = f"/vmess/{uuid}"
+        params = {
+            "encryption": "none",
+            "security": "tls",
+            "type": "ws",
+            "host": host,
+            "path": path,
+            "sni": host,
+            "fp": "chrome",
+            "alpn": "http/1.1",
+        }
+        # VMess لینک base64 می‌خواهد (ساده‌سازی)
+        config = {
+            "v": "2",
+            "ps": remark,
+            "add": host,
+            "port": "443",
+            "id": uuid,
+            "aid": "0",
+            "net": "ws",
+            "type": "none",
+            "host": host,
+            "path": path,
+            "tls": "tls",
+            "sni": host,
+            "fp": "chrome"
+        }
+        import base64, json
+        return "vmess://" + base64.urlsafe_b64encode(json.dumps(config).encode()).decode().rstrip("=")
+
+    elif protocol in ["shadowsocks", "ss", "shadosocks"]:
+        # Shadowsocks 2022
+        method = "2022-blake3-aes-128-gcm"
+        password = uuid.replace("-", "")[:32]  # استفاده از uuid به عنوان پسورد
+        return f"ss://{method}:{password}@{host}:443#{quote(remark)}"
+
+    elif protocol in ["hysteria2", "hy2", "hysteria"]:
+        # Hysteria2
+        params = {
+            "security": "tls",
+            "sni": host,
+            "alpn": "h3",
+            "fp": "chrome"
+        }
+        query = "&".join(f"{k}={quote(str(v))}" for k, v in params.items())
+        return f"hysteria2://{uuid}@{host}:443?{query}#{quote(remark)}"
+
+    else:
+        # پیش‌فرض: VLESS + XHTTP Stream (بهترین تعادل)
+        mode = "stream-up"
+        path = f"/xhttp-siz10/{mode}/{uuid}"
+        params = {
+            "encryption": "none",
+            "security": "tls",
+            "type": "xhttp",
+            "mode": mode,
+            "host": host,
+            "path": path,
+            "sni": host,
+            "fp": "chrome",
+            "alpn": "h2,http/1.1",
+        }
+        prefix = f"vless://{uuid}@{host}:443"
+
+    # ساخت لینک برای VLESS و پروتکل‌های مشابه
     query = "&".join(f"{k}={quote(str(v))}" for k, v in params.items())
-    return f"vless://{uuid}@{host}:443?{query}#{quote(remark)}"
+    return f"{prefix}?{query}#{quote(remark)}"
 
 
 def uptime() -> str:
