@@ -7557,34 +7557,86 @@ top:17px
           <span class="chip" onclick="setQuota(50,'GB',this)">۵۰ GB</span>
         </div>
       </div>
-      <div class="cp-block mb16">
-        <div class="cp-block-label"><i class="ti ti-plug-connected"></i> پروتکل انتقال</div>
-        <select id="nl-proto" style="display:none">
-          <option value="vless-ws">VLESS / WebSocket</option>
-          <option value="xhttp-packet-up">XHTTP Ultra · packet-up</option>
-          <option value="xhttp-stream-up">XHTTP Ultra · stream-up</option>
-        </select>
-        <div class="proto-cards">
-          <div class="proto-card active" data-val="vless-ws" onclick="selectProto('vless-ws',this)">
+<div class="cp-block mb16">
+    <div class="cp-block-label"><i class="ti ti-plug-connected"></i> پروتکل انتقال</div>
+    
+    <select id="nl-proto" style="display:none">
+        <option value="vless-ws">VLESS / WebSocket</option>
+        <option value="xhttp-packet-up">XHTTP Ultra · packet-up</option>
+        <option value="xhttp-stream-up">XHTTP Ultra · stream-up</option>
+        <option value="grpc">VLESS / gRPC</option>
+        <option value="vmess">VMess / WS</option>
+        <option value="shadowsocks">Shadowsocks 2022</option>
+        <option value="hysteria2">Hysteria2</option>
+        <option value="railway">Railway Optimized</option>
+    </select>
+
+    <div class="proto-cards">
+        <!-- VLESS WS -->
+        <div class="proto-card active" data-val="vless-ws" onclick="selectProto('vless-ws',this)">
             <div class="proto-card-check"><i class="ti ti-check"></i></div>
             <div class="proto-card-icon"><i class="ti ti-link"></i></div>
             <div class="proto-card-title">VLESS / WS</div>
             <div class="proto-card-desc">پایدار و همه‌منظوره</div>
-          </div>
-          <div class="proto-card" data-val="xhttp-packet-up" onclick="selectProto('xhttp-packet-up',this)">
+        </div>
+
+        <!-- XHTTP Packet-up -->
+        <div class="proto-card" data-val="xhttp-packet-up" onclick="selectProto('xhttp-packet-up',this)">
             <div class="proto-card-check"><i class="ti ti-check"></i></div>
             <div class="proto-card-icon"><i class="ti ti-bolt"></i></div>
             <div class="proto-card-title">XHTTP · packet-up</div>
             <div class="proto-card-desc">سازگار با CDN</div>
-          </div>
-          <div class="proto-card" data-val="xhttp-stream-up" onclick="selectProto('xhttp-stream-up',this)">
+        </div>
+
+        <!-- XHTTP Stream-up -->
+        <div class="proto-card" data-val="xhttp-stream-up" onclick="selectProto('xhttp-stream-up',this)">
             <div class="proto-card-check"><i class="ti ti-check"></i></div>
             <div class="proto-card-icon"><i class="ti ti-rocket"></i></div>
             <div class="proto-card-title">XHTTP · stream-up</div>
             <div class="proto-card-desc">تاخیر پایین‌تر</div>
-          </div>
         </div>
-      </div>
+
+        <!-- gRPC -->
+        <div class="proto-card" data-val="grpc" onclick="selectProto('grpc',this)">
+            <div class="proto-card-check"><i class="ti ti-check"></i></div>
+            <div class="proto-card-icon"><i class="ti ti-server"></i></div>
+            <div class="proto-card-title">VLESS / gRPC</div>
+            <div class="proto-card-desc">مناسب شبکه‌های محدود</div>
+        </div>
+
+        <!-- VMess -->
+        <div class="proto-card" data-val="vmess" onclick="selectProto('vmess',this)">
+            <div class="proto-card-check"><i class="ti ti-check"></i></div>
+            <div class="proto-card-icon"><i class="ti ti-exchange"></i></div>
+            <div class="proto-card-title">VMess / WS</div>
+            <div class="proto-card-desc">سازگار با کلاینت‌های قدیمی</div>
+        </div>
+
+        <!-- Shadowsocks -->
+        <div class="proto-card" data-val="shadowsocks" onclick="selectProto('shadowsocks',this)">
+            <div class="proto-card-check"><i class="ti ti-check"></i></div>
+            <div class="proto-card-icon"><i class="ti ti-shield"></i></div>
+            <div class="proto-card-title">Shadowsocks</div>
+            <div class="proto-card-desc">سریع و سبک</div>
+        </div>
+
+        <!-- Hysteria2 -->
+        <div class="proto-card" data-val="hysteria2" onclick="selectProto('hysteria2',this)">
+            <div class="proto-card-check"><i class="ti ti-check"></i></div>
+            <div class="proto-card-icon"><i class="ti ti-rocket"></i></div>
+            <div class="proto-card-title">Hysteria2</div>
+            <div class="proto-card-desc">سرعت بالا + ضدسانسور قوی</div>
+        </div>
+
+        <!-- Railway Optimized -->
+        <div class="proto-card" data-val="railway" onclick="selectProto('railway',this)">
+            <div class="proto-card-check"><i class="ti ti-check"></i></div>
+            <div class="proto-card-icon"><i class="ti ti-train"></i></div>
+            <div class="proto-card-title">Railway Optimized</div>
+            <div class="proto-card-desc">بهینه برای Railway</div>
+        </div>
+    </div>
+</div>
       <div class="cp-footer">
         <div class="cp-footer-note"><i class="ti ti-info-circle"></i> UUID کاملاً رندوم تولید می‌شود · فقط UUID‌های ثبت‌شده اجازه اتصال دارند · پروتکل پس از ساخت قابل تغییر نیست.</div>
         <button class="cp-submit-btn" onclick="createLink()"><i class="ti ti-link-plus"></i> ساخت کانفیگ</button>
