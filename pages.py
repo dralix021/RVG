@@ -8071,10 +8071,14 @@ async function createLink(){
     const note = document.getElementById('nl-note').value.trim();
     const sub_id = document.getElementById('nl-sub').value || null;
     
-    // مهم: همیشه از select مخفی بخون
+    // پروتکل
     const protocol = document.getElementById('nl-proto').value || 'vless-ws';
+    
+    // SNI دلخواه
+    const custom_sni = document.getElementById('nl-sni').value.trim() || null;
 
-    console.log("ارسال پروتکل:", protocol);   // ← برای تست (در کنسول مرورگر چک کن)
+    console.log("ارسال پروتکل:", protocol);
+    console.log("ارسال SNI:", custom_sni);
 
     try{
         const r = await authF('/api/links', {
@@ -8087,21 +8091,22 @@ async function createLink(){
                 expires_days: exp || 0,
                 note,
                 sub_id,
-                protocol          // ← مطمئن شو این ارسال میشه
+                protocol,
+                sni: custom_sni          // ← SNI ارسال می‌شود
             })
         });
 
         if(!r.ok) throw new Error('failed');
 
         // پاک کردن فرم
-        ['nl-label','nl-val','nl-exp','nl-note'].forEach(id => {
+        ['nl-label','nl-val','nl-exp','nl-note','nl-sni'].forEach(id => {
             const el = document.getElementById(id);
             if(el) el.value = '';
         });
 
         toast('کانفیگ ساخته شد ✓', 'ok');
         loadLinks();
-        closeSb();   // اگر سایدبار داری
+        closeSb();
     } catch(e){
         console.error(e);
         toast('خطا در ساخت کانفیگ', 'err');
