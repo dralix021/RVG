@@ -233,15 +233,27 @@ def client_ip(request: Request) -> str:
     return request.client.host if request.client else "نامشخص"
 # ── Default link ──────────────────────────────────────────────────────────────
 _default_link_created = False
+
 async def ensure_default_link():
     global _default_link_created
+
     if _default_link_created:
         return
+
     async with LINKS_LOCK:
         if not any(l.get("is_default") for l in LINKS.values()):
-            uid = hashlib.sha256(f"default{CONFIG['secret']}".encode()).hexdigest()
-            uid = f"{uid[:8]}-{uid[8:12]}-{uid[12:16]}-{uid[16:20]}-{uid[20:32]}"
+
+            uid = hashlib.sha256(
+                f"default{CONFIG['secret']}".encode()
+            ).hexdigest()
+
+            uid = (
+                f"{uid[:8]}-{uid[8:12]}-{uid[12:16]}-"
+                f"{uid[16:20]}-{uid[20:32]}"
+            )
+
             if uid not in LINKS:
+
                 LINKS[uid] = {
                     "label": "لینک پیش‌فرض",
                     "limit_bytes": 0,
@@ -253,8 +265,26 @@ async def ensure_default_link():
                     "is_default": True,
                     "sub_id": None,
                     "protocol": DEFAULT_PROTOCOL,
+
+                    # چند لینک برای یک کانفیگ
+                    "links": [
+                        {
+                            "name": "Default Link 1",
+                            "protocol": "ws"
+                        },
+                        {
+                            "name": "Default Link 2",
+                            "protocol": "ws"
+                        },
+                        {
+                            "name": "Default Link 3",
+                            "protocol": "ws"
+                        }
+                    ]
                 }
+
                 asyncio.create_task(save_state())
+
         _default_link_created = True
 # ── Basic endpoints ───────────────────────────────────────────────────────────
 @app.get("/")
@@ -615,6 +645,7 @@ async def create_link(request: Request, _=Depends(require_auth)):
         protocol = DEFAULT_PROTOCOL
     uid = generate_uuid()
     async with LINKS_LOCK:
+    async with LINKS_LOCK:
         LINKS[uid] = {
             "label": label,
             "limit_bytes": limit_bytes,
@@ -626,23 +657,28 @@ async def create_link(request: Request, _=Depends(require_auth)):
             "is_default": False,
             "sub_id": sub_id,
             "protocol": protocol,
+
+            "links": []
         }
-    if sub_id:
-        async with SUBS_LOCK:
-            if sub_id in SUBS:
-                ids = SUBS[sub_id].setdefault("link_ids", [])
-                if uid not in ids:
-                    ids.append(uid)
-    asyncio.create_task(save_state())
-    log_activity("link", f"کانفیگ «{label}» ساخته شد", "ok")
-    host = get_host()
-    return {
-        "uuid": uid,
-        **LINKS[uid],
-        "expired": False,
-        "vless_link": generate_vless_link(uid, host, remark=f"RVG-{label}", protocol=protocol),
-        "sub_url": f"https://{host}/sub/{uid}",
-    }
+
+        host = get_host()
+
+        # تولید چند خروجی برای یک کانفیگ
+        for item in [
+            {"name": "Default", "protocol": protocol},
+            {"name": "Backup", "protocol": protocol},
+            {"name": "Mobile", "protocol": protocol},
+        ]:
+            LINKS[uid]["links"].append({
+                "name": item["name"],
+                "protocol": item["protocol"],
+                "url": generate_vless_link(
+                    uid,
+                    host,
+                    remark=f"RVG-{label}-{item['name']}",
+                    protocol=item["protocol"]
+                )
+            })
 @app.get("/api/links")
 async def list_links(_=Depends(require_auth)):
     host = get_host()
