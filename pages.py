@@ -8101,19 +8101,48 @@ async function loadLinks(){
   }catch(e){console.error(e)}
 }
 async function createLink(){
-  const label=document.getElementById('nl-label').value.trim()||'کانفیگ جدید';
-  const val=document.getElementById('nl-val').value;
-  const unit=document.getElementById('nl-unit').value;
-  const exp=document.getElementById('nl-exp').value;
-  const note=document.getElementById('nl-note').value.trim();
-  const sub_id=document.getElementById('nl-sub').value||null;
-  const protocol=document.getElementById('nl-proto').value||'vless-ws';
-  try{
-    const r=await authF('/api/links',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({label,limit_value:val||0,limit_unit:unit,expires_days:exp||0,note,sub_id,protocol})});
-    if(!r.ok)throw new Error('failed');
-    ['nl-label','nl-val','nl-exp','nl-note'].forEach(id=>document.getElementById(id).value='');
-    toast('کانفیگ ساخته شد ✓','ok');loadLinks();
-  }catch(e){toast('خطا در ساخت','err')}
+    const label = document.getElementById('nl-label').value.trim() || 'کانفیگ جدید';
+    const val = document.getElementById('nl-val').value;
+    const unit = document.getElementById('nl-unit').value;
+    const exp = document.getElementById('nl-exp').value;
+    const note = document.getElementById('nl-note').value.trim();
+    const sub_id = document.getElementById('nl-sub').value || null;
+    
+    // مهم: همیشه از select مخفی بخون
+    const protocol = document.getElementById('nl-proto').value || 'vless-ws';
+
+    console.log("ارسال پروتکل:", protocol);   // ← برای تست (در کنسول مرورگر چک کن)
+
+    try{
+        const r = await authF('/api/links', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                label,
+                limit_value: val || 0,
+                limit_unit: unit,
+                expires_days: exp || 0,
+                note,
+                sub_id,
+                protocol          // ← مطمئن شو این ارسال میشه
+            })
+        });
+
+        if(!r.ok) throw new Error('failed');
+
+        // پاک کردن فرم
+        ['nl-label','nl-val','nl-exp','nl-note'].forEach(id => {
+            const el = document.getElementById(id);
+            if(el) el.value = '';
+        });
+
+        toast('کانفیگ ساخته شد ✓', 'ok');
+        loadLinks();
+        closeSb();   // اگر سایدبار داری
+    } catch(e){
+        console.error(e);
+        toast('خطا در ساخت کانفیگ', 'err');
+    }
 }
 function openEditLink(uuid){
   const l=allLinksList.find(x=>x.uuid===uuid);
